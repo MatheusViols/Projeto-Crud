@@ -62,23 +62,23 @@ class Create:
     def criarUsuario(self):
         login = input("login: ")
         if not self.validaLogin(login): 
-            return
+            return False
 
         senha = input("senha: ")
         if not self.validaSenha(senha): 
-            return
+            return False
 
         nome = input("nome: ")
         if not self.validaNome(nome):
-            return
+            return False
 
         sobrenome = input("sobrenome: ")
         if not self.validaSobrenome(sobrenome):
-            return 
+            return False
 
         endereco = input("Endereço: ")
         if not self.validaEndereco(endereco):
-            return
+            return False
 
         return Usuario(login, senha, nome, sobrenome, endereco)
 
