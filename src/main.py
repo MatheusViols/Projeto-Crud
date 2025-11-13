@@ -16,7 +16,12 @@ while True:
 
     if uso == 'create':
         criar = Create(lista)
-        criar.criarUsuario()
+        usuario = criar.criarUsuario()
+
+        if usuario:
+            lista.append(usuario)
+        else:
+            print("Não foi possivel criar o usuario")
     elif uso == 'show':
         login = input("login: ")
         senha = input("senha: ")
@@ -25,6 +30,8 @@ while True:
         ler.mostraUsuario(login, senha)
     elif uso == 'sair':
         break
+    else:
+        print(f"Comando {uso} não faz parte do conjunto de comandos padrão")
 
 
 
