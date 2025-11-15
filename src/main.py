@@ -40,7 +40,9 @@ while True:
         banco = conexao()
 
         ler = Read(banco[0], banco[1])
-        ler.mostraUsuario(login, senha)
+        if not ler.mostraUsuario(login, senha):
+            print(f"Erro: {login} não encontrado")
+
 
         banco[1].close()
         banco[0].close()

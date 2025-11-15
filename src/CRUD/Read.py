@@ -38,6 +38,9 @@ class Read:
                 Nome completo: {fetch_info[1]} {fetch_info[2]}
                 Endereço: {fetch_info[3]}
             """)
+            return True
+
+        return False
 
 
 
