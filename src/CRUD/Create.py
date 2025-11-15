@@ -1,14 +1,19 @@
 from CRUD.Usuarios.Usuario import Usuario
 
+import mysql.connector
+
 class Create:
-    def __init__(self, lista):
-        self.__lista = lista
+    def __init__(self, cnx, cursor):
+        self.__cnx = cnx
+        self.__cursor = cursor
 
     def validaLogin(self, login):
-        for usuario in self.__lista:
-            if login == usuario.login:
-                print("Erro: Login já está em uso") 
-                return False
+        self.__cursor.execute(f"SELECT login FROM usuario WHERE login = '{login}'")
+        fetch_login = self.__cursor.fetchone()
+
+        if fetch_login and login == fetch_login[0]:
+            print("Erro: Login já utilizado")
+            return False
 
         return True
 
@@ -80,6 +85,12 @@ class Create:
         if not self.validaEndereco(endereco):
             return False
 
-        return Usuario(login, senha, nome, sobrenome, endereco)
+        self.__cursor.execute(f"INSERT INTO usuario(login, senha, nome, sobrenome, endereco) VALUES('{login}', '{senha}', '{nome}', '{sobrenome}', '{endereco}')")
+        self.__cnx.commit()
+
+        return True
+
+
+
 
 
