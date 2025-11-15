@@ -28,7 +28,10 @@ class Read:
 
 
     def mostraUsuario(self, login, senha):
+        # Retorna True se o usuario existe, False se não foi encontrado
         usuario = self.usuarioExiste(login)
+
+        # Se usuario existe e informou a senha correta, mostra as informações
         if usuario and self.validaUsuario(usuario, senha):
             self.__cursor.execute(f"SELECT login, nome, sobrenome, endereco FROM usuario WHERE login = '{login}';")
             fetch_info = self.__cursor.fetchone()
