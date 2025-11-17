@@ -1,50 +1,48 @@
 class Usuario:
-    def __init__(self, login, senha, nome, sobrenome, endereco):
-        self.__login = login
-        self.__senha = senha
-        self.__nome = nome
-        self.__sobrenome = sobrenome
+    def __init__(self, cpf, nome_completo, telefone, bairro, endereco, area_interesse, desc=None):
+        self.__cpf = cpf
+        self.__nome_completo = nome_completo
+        self.__telefone = telefone
+        self.__bairro = bairro
         self.__endereco = endereco
-
-    @property
-    def login(self):
-        return self.__login
-
-    @property
-    def senha(self):
-        return self.__senha
-
-    @property
-    def nome(self):
-        return self.__nome
-
-    @property
-    def sobrenome(self):
-        return self.__sobrenome
-
-    @property
-    def endereco(self):
-        return self.__endereco
+        self.__area_interesse = area_interesse
+        self.__desc = desc
 
     
 
+    def buscarVagas(self):
+        pass
 
-    @login.setter
-    def login(self, login):
-        self.__login = login
+    def aplicarVaga(self):
+        pass
 
-    @senha.setter
-    def senha(self, novaSenha):
-        self.__senha = novaSenha
+    def removerAplicacao(self):
+        pass
 
-    @nome.setter
-    def nome(self, novoNome):
-        self.__nome = novoNome
+    def statusAplicacao(self):
+        pass
 
-    @sobrenome.setter
-    def sobrenome(self, novoSobrenome):
-        self.__sobrenome = novoSobrenome
 
-    @endereco.setter
-    def endereco(self, novoEndereco):
-        self.__endereco = novoEndereco
+
+
+    def buscarCursos(self):
+        pass
+
+    def matricularCurso(self):
+        pass
+
+    def removerMatricula(self):
+        pass
+
+    def statusMatricula(self):
+        pass
+
+
+
+
+    def alterarDados(self):
+        pass
+
+    def mapa(self):
+        pass
+
