@@ -1,0 +1,94 @@
+MSG_INICIAL = """
+     ---------->> Conecta Igarassu <<----------
+            Bem vindo ao programa Conecta Igarassu
+
+            Nosso objetivo: Conectar jovens à vagas
+            de emprego ou de cursos profissionaliza
+            ntes
+
+            Antes de tudo, você já possui login?
+            (Responda com Sim ou Não)
+
+
+"""
+MSG_TIPO_CAD = """
+            Que tipo de conta deseja cadastrar?
+            1 - Jovem
+            2 - Empresa
+            3 - Instituição de Ensino
+
+"""
+
+
+
+MSG_CAD_JOVEM = """
+            Para sua conta de jovem vamos precisar:
+            - Seu CPF (apenas números)
+            - Nome completo
+            - Data de nascimento
+            - Número de telefone (apenas números incluindo DDD)
+            - Bairro
+            - Endereço
+            - Área de interesse para trabalho ou estudo
+            - Descrição pessoal de até 100 caracteres
+
+"""
+
+MSG_COD_BAIRRO= """
+
++------+---------------------------+------+---------------------------+
+| Cod. | Bairro                    | Cod. | Bairro                    |
++------+---------------------------+------+---------------------------+
+| 1    | Agamenon Magalhães        | 2    | Alto do Céu               |
+| 3    | Ana de Albuquerque        | 4    | Arassoiaba                |
+| 5    | Área Rural de Igarassu    | 6    | Bela Vista                |
+| 7    | Bonfim                    | 8    | Campina de Feira          |
+| 9    | Centro                    | 10   | Cruz de Reboucas          |
+| 11   | Distrito de Três Ladeiras | 12   | Distrito Industrial       |
+| 13   | Distrito Nova Cruz        | 14   | Encanto Igarassu          |
+| 15   | Inhamã                    | 16   | Jabacó                    |
+| 17   | Jardim Boa Sorte          | 18   | Monjope                   |
+| 19   | Pancó                     | 20   | Vila Rural                |
+| 21   | Posto de Monta            | 22   | Rubina                    |
+| 23   | Santa Luzia               | 24   | Santa Rita                |
+| 25   | Santo Antônio             | 26   | Saramandaia               |
+| 27   | Sítio dos Marcos          | 28   | Tabatinga                 |
+| 29   | Triunfo                   | 30   | Umbura                    |
+| 31   | Cuieiras                  |      |                           |
++------+---------------------------+------+---------------------------+
+
+"""
+
+MSG_COD_AREA = """
++------+---------------------------+
+| Cod. | Area                      |
++------+---------------------------+
+| 1    | TI                        |
+| 2    | Saúde                     |
+| 3    | Design                    |
+| 4    | Marketing                 |
+| 5    | Industrial                |
+| 6    | Administração             |
+| 7    | Setor Público             |
++------+---------------------------+
+
+"""
+
+MSG_DESC = """
+            Agora nos dê uma breve descrição pessoal de no maximo
+            100 caracteres, tente não passar disso, a partir do
+            caractere 100 tudo será ignorado e sua descrição ficará
+            incompleta
+            Caso não queira fazer isso agora, o campo é opicional
+            e pode ser deixado em branco para preencher futuramente
+"""
+
+MSG_SENHA = """
+            Por fim, escolha uma senha da qual consiga lembrar e que
+            seja segura. A senha deve conter de 5 a 11 caracteres po
+            dendo serem letras, numeros e caracteres especiais.
+            NÃO SÃO PERMITIDOS ESPAÇOS EM BRANCO
+            Logo em seguida será pedido que confirme a senha digitada
+
+"""
+

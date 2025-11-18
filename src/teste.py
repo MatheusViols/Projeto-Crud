@@ -1,11 +1,4 @@
-import datetime
+from datetime import date
 
-ano = '2007'
-mes = '02'
-dia = '28'
-
-try:
-    datetime.datetime(year=int(ano), month=int(mes), day=int(dia))
-except ValueError:
-    print("Rapaz")
-
+ano_atual = int(date.today().year)
+print(ano_atual)

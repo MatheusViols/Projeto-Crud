@@ -3,11 +3,9 @@ from CRUD.Read import Read
 
 from CRUD.Usuarios.Usuario import Usuario
 
-import mensagens
+from Mensagens import mensagens
 
 import mysql.connector
-
-
 
 
 
@@ -20,13 +18,7 @@ def conexao():
 
 def tipoConta():
     while True:
-        print("""
-                    Que tipo de conta deseja cadastrar?
-                    1 - Jovem
-                    2 - Empresa
-                    3 - Instituição de Ensino
-
-                """)
+        print(mensagens.MSG_TIPO_CAD)
         tipo_conta = int(input("     -> "))
 
         if tipo_conta not in range(1, 3):
@@ -44,17 +36,22 @@ while True:
         conf_login = input("     ->")
 
         if conf_login == "Não":
-            cadastro = Create()
+            banco = conexao()
+            cadastro = Create(banco[0], banco[1])
             tipo = tipoConta()
 
             if tipo == 1:
                 print(mensagens.MSG_CAD_JOVEM)
 
-                cadastro.cadJovem()
+                if not cadastro.cadJovem():
+                    print("Não foi possivel criar o usuario")
             elif tipo == 2:
                 cadastro.cadEmpresa()
             elif tipo == 3:
                 cadastro.cadInstituicao()
+
+
+            print("Cadastro criado com sucesso!")
 
 
 

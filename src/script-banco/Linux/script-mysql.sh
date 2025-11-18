@@ -10,6 +10,7 @@ USE crud;
 CREATE TABLE IF NOT EXISTS usuario
 (
 	CPF varchar(11) not null unique primary key,
+	senha varchar(11) not null,
 	nome_comp varchar(50) not null,
 	data_nasc date not null,
 	telefone varchar(11) not null,
@@ -25,6 +26,7 @@ CREATE TABLE IF NOT EXISTS usuario
 CREATE TABLE IF NOT EXISTS empresa
 (
 	CNPJ varchar(14) not null unique primary key,
+	senha varchar(11) not null,
 	nome_emp varchar(30) not null,
 	endereco varchar(30) not null,
 
@@ -36,6 +38,7 @@ CREATE TABLE IF NOT EXISTS empresa
 CREATE TABLE IF NOT EXISTS instituicao
 (
 	CNPJ varchar(14) not null unique primary key,
+	senha  varchar(11) not null,
 	nome_inst varchar(30) not null,
 	endereco varchar(30) not null,
 
@@ -83,7 +86,7 @@ CREATE TABLE IF NOT EXISTS area
 CREATE TABLE IF NOT EXISTS bairro
 (
 	cod_bairro int not null unique primary key,
-	nome_bairro varchar(20) not null
+	nome_bairro varchar(40) not null
 );
 
 CREATE TABLE IF NOT EXISTS turno
@@ -156,4 +159,37 @@ INSERT INTO area(cod_area, nome_area) VALUES(4, 'Marketing');
 INSERT INTO area(cod_area, nome_area) VALUES(5, 'Industrial');
 INSERT INTO area(cod_area, nome_area) VALUES(6, 'Administração');
 INSERT INTO area(cod_area, nome_area) VALUES(7, 'Setor Público');
+
+INSERT INTO bairro(cod_bairro, nome_bairro) VALUES  
+(1,'Agamenon Magalhães'),  
+(2,'Alto do Céu'),  
+(3,'Ana de Albuquerque'),  
+(4,'Arassoiaba'),  
+(5,'Área Rural de Igarassu'),  
+(6,'Bela Vista'),  
+(7,'Bonfim'),  
+(8,'Campina de Feira'),  
+(9,'Centro'),  
+(10,'Cruz de Reboucas'),  
+(11,'Distrito de Três Ladeiras'),  
+(12,'Distrito Industrial'),  
+(13,'Distrito Nova Cruz'),  
+(14,'Encanto Igarassu'),  
+(15,'Inhamã'),  
+(16,'Jabacó'),  
+(17,'Jardim Boa Sorte'),  
+(18,'Monjope'),  
+(19,'Pancó'),  
+(20,'Vila Rural'),  
+(21,'Posto de Monta'),  
+(22,'Rubina'),  
+(23,'Santa Luzia'),  
+(24,'Santa Rita'),  
+(25,'Santo Antônio'),  
+(26,'Saramandaia'),  
+(27,'Sítio dos Marcos'),  
+(28,'Tabatinga'),  
+(29,'Triunfo'),  
+(30,'Umbura'),  
+(31,'Cuieiras');
 "
