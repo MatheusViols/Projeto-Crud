@@ -192,4 +192,10 @@ INSERT INTO bairro(cod_bairro, nome_bairro) VALUES
 (29,'Triunfo'),  
 (30,'Umbura'),  
 (31,'Cuieiras');
+
+INSERT INTO usuario(CPF, senha, nome_comp, data_nasc, telefone, endereco, desc_user, cod_area, cod_bairro) VALUES('18196112320', 'manga', 'George Alberto', '1987-06-12', '81997141562', 'Rua Camboiá', 'Professor de Front End Rapaz!', 1, 7);
+
+INSERT INTO empresa(CNPJ, senha, nome_emp, endereco, desc_emp, cod_bairro) VALUES('12345678912345', 'sarahbonito', 'Bonito Generation', 'Rua Padre Canhão', 'Empresa do ramo criativo', 19);
+
+INSERT INTO instituicao(CNPJ, senha, nome_inst, endereco, desc_inst, cod_bairro) VAlues('12345678912345', 'jr', 'Unesp', 'Avenida fim do mundo', 'Universidade com mais de 90 anos de história em pernambuco', 22);
 "
