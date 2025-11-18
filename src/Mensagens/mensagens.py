@@ -22,6 +22,26 @@ MSG_TIPO_CAD = """
 
 
 MSG_CAD_JOVEM = """
+            Para sua conta de empresa vamos precisar:
+            - CNPJ (apenas números)
+            - Nome da empresa
+            - Bairro
+            - Endereço
+            - Descrição da empresa de até 100 caracteres
+
+"""
+
+MSG_CAD_INST = """
+            Para sua conta de instituição de ensino vamos precisar:
+            - CNPJ (apenas números)
+            - Nome da instituição
+            - Bairro
+            - Endereço
+            - Descrição da instituição de até 100 caracteres
+
+"""
+
+MSG_CAD_JOVEM = """
             Para sua conta de jovem vamos precisar:
             - Seu CPF (apenas números)
             - Nome completo
@@ -33,7 +53,6 @@ MSG_CAD_JOVEM = """
             - Descrição pessoal de até 100 caracteres
 
 """
-
 MSG_COD_BAIRRO= """
 
 +------+---------------------------+------+---------------------------+

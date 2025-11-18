@@ -1,12 +1,16 @@
-class Usuario:
-    def __init__(self, cpf, nome_completo, telefone, bairro, endereco, area_interesse, desc=None):
-        self.__cpf = cpf
-        self.__nome_completo = nome_completo
-        self.__telefone = telefone
-        self.__bairro = bairro
-        self.__endereco = endereco
-        self.__area_interesse = area_interesse
-        self.__desc = desc
+class Jovem:
+    def __init__(self, cpf, nome, data, telefone, bairro, endereco, desc, area):
+        self.__att = {
+                'cpf':cpf,
+                'nome':nome,
+                'data'data,
+                'telefoe':telefone,
+                'bairro':bairro,
+                'endereco':endereco,
+                'desc':desc,
+                'area':area
+        }
+
 
     
 

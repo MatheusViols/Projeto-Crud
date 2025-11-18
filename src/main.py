@@ -1,7 +1,6 @@
 from CRUD.Create import Create
 from CRUD.Read import Read
 
-from CRUD.Usuarios.Usuario import Usuario
 
 from Mensagens import mensagens
 
@@ -21,7 +20,7 @@ def tipoConta():
         print(mensagens.MSG_TIPO_CAD)
         tipo_conta = int(input("     -> "))
 
-        if tipo_conta not in range(1, 3):
+        if tipo_conta not in range(1, 4):
             print(f"\nErro: {tipo_conta} não é uma opção\n")
             continue
 
@@ -45,10 +44,19 @@ while True:
 
                 if not cadastro.cadJovem():
                     print("Não foi possivel criar o usuario")
+                    break
             elif tipo == 2:
-                cadastro.cadEmpresa()
+                print(mensagens.MSG_CAD_EMP)
+
+                if not cadastro.cadEmpresa():
+                    print("Não foi possível criar a empresa")
+                    break
             elif tipo == 3:
-                cadastro.cadInstituicao()
+                print(mensagens.MSG_CAD_INST)
+
+                if not cadastro.cadInstituicao():
+                    print("Não foi possível criar a instituição") 
+                    break
 
 
             print("Cadastro criado com sucesso!")

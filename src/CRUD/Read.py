@@ -1,4 +1,3 @@
-from CRUD.Usuarios.Usuario import Usuario
 
 import mysql.connector
 
