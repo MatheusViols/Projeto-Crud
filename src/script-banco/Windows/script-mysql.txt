@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS usuario
 	CPF varchar(11) not null unique primary key,
 	nome_comp varchar(50) not null,
 	data_nasc date not null,
-	telefone varchar(10) not null,
+	telefone varchar(11) not null,
 	endereco varchar(30) not null,
 	
 	desc_user varchar(100),
@@ -143,4 +143,17 @@ ALTER TABLE aplica
 ADD CONSTRAINT fk_CPF_apli FOREIGN KEY (CPF) REFERENCES usuario(CPF),
 ADD CONSTRAINT fk_vaga_apli FOREIGN KEY (cod_vaga) REFERENCES vaga(cod_vaga),
 ADD CONSTRAINT pk_aplica PRIMARY KEY (CPF, cod_vaga);
+
+
+INSERT INTO turno(cod_turno, nome_turno) VALUES(1, 'Manhã');
+INSERT INTO turno(cod_turno, nome_turno) VALUES(2, 'Tarde');
+INSERT INTO turno(cod_turno, nome_turno) VALUES(3, 'Noite');
+
+INSERT INTO area(cod_area, nome_area) VALUES(1, 'TI');
+INSERT INTO area(cod_area, nome_area) VALUES(2, 'Saúde');
+INSERT INTO area(cod_area, nome_area) VALUES(3, 'Design');
+INSERT INTO area(cod_area, nome_area) VALUES(4, 'Marketing');
+INSERT INTO area(cod_area, nome_area) VALUES(5, 'Industrial');
+INSERT INTO area(cod_area, nome_area) VALUES(6, 'Administração');
+INSERT INTO area(cod_area, nome_area) VALUES(7, 'Setor Público');
 "

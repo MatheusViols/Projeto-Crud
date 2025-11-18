@@ -1,119 +1,86 @@
-from CRUD.Usuarios.Usuario import Usuario
-
-import mysql.connector
+import re 
+import datetime
 
 class Create:
-    # Recebe a conexão e o cursor na inicialização
-    def __init__(self, cnx, cursor):
-        self.__cnx = cnx
-        self.__cursor = cursor
+    def __init__(self):
+        pass
 
-    def validaLogin(self, login):
-        """
-        Seleciona linhas em que o login aparece
-        fetchone() retorna uma unica linha
-        fetchall() retorna todas as linhas encontradas
-        Os dois retornam tuplas, fetchone uma tupla que representa uma linha, fetchall
-        uma lista de tuplas que representam varias linhas
-
-        Usei fetchone(), por padrão não vai existir mais de uma linha com mesmo login 
-        """
-        self.__cursor.execute(f"SELECT login FROM usuario WHERE login = '{login}'")
-        fetch_login = self.__cursor.fetchone()
-
-        # Comparando o retorno da busca por só por segurança
-        if fetch_login and login == fetch_login[0]:
-            print("Erro: Login já utilizado")
+    def validaCPF(self, CPF):
+        if not CPF:
+            return False
+        elif re.search(r'[^0-9]', CPF):
+            print("Erro: CPF aceita apenas números")
+            return False
+        elif len(CPF) < 11:
+            print("Erro: CPF tem o número fixo de 11 digitos")
             return False
 
         return True
 
-    def validaSenha(self, senha):
-        if not senha or senha.isspace():
-            print("Erro: Senha não pode ser vazia")
-            return False
-
-
-        confSenha = input("Confirme a senha: ")
-        if confSenha != senha:
-            print("Erro: Senhas diferentes")
-            return False
-
-        if " " in senha:
-            print("Erro: Senha não pode ter espaços em branco")
+    def validaNome(self, nome_comp):
+        if not nome_comp or nome_comp.isspace():
             return False
 
         return True
 
-    def validaNome(self, nome):
-        if not nome or nome.isspace():
-            print("Erro: Nome não pode ser vazio")
+    def validaData(self, dia, mes, ano):
+        if not dia or not mes or not ano:
+            return False
+        elif " " in dia or " " in mes or " " in ano:
+            print("Erro: Data não aceita uso de espaços")
+            return False
+        elif len(dia) != 2 or len(mes) != 2 or len(ano) != 4:
+            print("Erro: Dia e mes devem conter dois digitos, ano deve conter 4")
+            return False
+        elif re.search(r'[^0-9]', dia) or re.search(r'[^0-9]', mes) or re.search(r'[^0-9]', ano):
+            print("Erro: Data de nascimento aceita apenas números")
             return False
 
-        if " " in nome:
-            print("Erro: Sem espaços em branco, apenas o primeiro nome")
-            return False
-
-        return True
-
-    def validaSobrenome(self, sobrenome):
-        if not sobrenome or sobrenome.isspace():
-            print("Erro: Sobrenome não pode ser vazio")
-            return False
-
-        if " " in sobrenome:
-            print("Erro: Sem espaços em branco, apenas o sobrenome")
-            return False
-
-        return True
-
-
-    def validaEndereco(self, endereco):
-        if not endereco or endereco.isspace():
-            print("Erro: Endereço não pode ser vazio")
+        try:
+            datetime.datetime(year=int(ano), month=int(mes), day=int(dia))
+        except ValueError:
+            print("Erro: Data inválida")
             return False
 
         return True
-
-    def criarUsuario(self):
-        """
-        A função vai receber as informações e testar se são válidas.
-        Informações inválidas: login que já existe, vazia, composta só de espaços, com
-        espaço(exceto endereço), confirmação diferente de valor(por enquanto só em senha)
-
-        Em caso de alguma dessas, retorna False, o tipo de erro e a criação não é finalizada
-        """
-        login = input("login: ")
-        if not self.validaLogin(login): 
+        
+    def validaTelefone(self, telefone):
+        if not telefone:
+            print("Erro: telefone não pode ser vazio")
             return False
-
-        senha = input("senha: ")
-        if not self.validaSenha(senha): 
+        elif " " in telefone:
+            print("Erro: telefone não aceita espaços em branco")
             return False
-
-        nome = input("nome: ")
-        if not self.validaNome(nome):
+        elif len(telefone) != 11:
+            print("Erro: telefone tem um tamanho fixo de 11 digitos")
             return False
-
-        sobrenome = input("sobrenome: ")
-        if not self.validaSobrenome(sobrenome):
+        elif re.search(r'[^0-9]', telefone):
+            print("Erro: telefone aceita apenas números")
             return False
-
-        endereco = input("Endereço: ")
-        if not self.validaEndereco(endereco):
-            return False
-
-        """
-        Insere uma nova linha com as informações adiquiridas
-
-        self.__cnx.commit() é importante, as mudanças não vão ser feitas sem ela.
-        Depois de um cursor.execute() que insira, delete ou atualize a tabela, sempre
-        usar self.__cnx.commit()
-        """
-        self.__cursor.execute(f"INSERT INTO usuario(login, senha, nome, sobrenome, endereco) VALUES('{login}', '{senha}', '{nome}', '{sobrenome}', '{endereco}')")
-        self.__cnx.commit()
 
         return True
+        
+
+
+
+    def cadJovem(self):
+        CPF = input("CPF: ")
+        if not validaCPF(CPF):
+            return False
+
+        nome_comp = input("Nome completo: ")
+        if not validaNome(nome_comp):
+            return False
+
+        dia = input("Dia de nascimento: ")
+        mes = input("Mês de nascimento: ")
+        ano = input("Ano de nascimento: ")
+        if not validaData(dia, mes, ano):
+            return False
+
+        telefone = input("Telefone: ")
+        if not validaTelefone(telefone):
+            return False
 
 
 
