@@ -21,7 +21,7 @@ MSG_TIPO_CAD = """
 
 
 
-MSG_CAD_JOVEM = """
+MSG_CAD_EMP = """
             Para sua conta de empresa vamos precisar:
             - CNPJ (apenas números)
             - Nome da empresa
@@ -110,4 +110,29 @@ MSG_SENHA = """
             Logo em seguida será pedido que confirme a senha digitada
 
 """
+
+MSG_TIPO_LOGIN = """
+            Para logar, primeiro selecione o tipo de conta em que deseja
+            logar entre as opções:
+
+            1 - Jovem
+            2 - Empresa
+            3 - Instituição
+"""
+
+MSG_LOGIN_JOVEM = """
+            Para logar como Jovem você precisará fornecer:
+            - Seu CPF (apenas números)
+            - A senha cadastrada junto ao seu perfil
+
+"""
+
+MSG_LOGIN_EMP_INST = """
+            Para logar você precisará fornecer:
+            - Seu CNPJ (apenas números)
+            - A senha cadastrada junto ao seu perfil
+
+"""
+
+
 

@@ -1,6 +1,7 @@
 from CRUD.Create import Create
 from CRUD.Read import Read
 
+from Login import Login
 
 from Mensagens import mensagens
 
@@ -17,7 +18,6 @@ def conexao():
 
 def tipoConta():
     while True:
-        print(mensagens.MSG_TIPO_CAD)
         tipo_conta = int(input("     -> "))
 
         if tipo_conta not in range(1, 4):
@@ -27,47 +27,72 @@ def tipoConta():
         return tipo_conta
 
 
-
-while True:
-    print(mensagens.MSG_INICIAL)
-
+def telaInicial():
     while True:
+        print(mensagens.MSG_INICIAL)
         conf_login = input("     ->")
-
         if conf_login == "Não":
-            banco = conexao()
-            cadastro = Create(banco[0], banco[1])
-            tipo = tipoConta()
+            while True:
+                    banco = conexao()
+                    cadastro = Create(banco[0], banco[1])
+                    print(mensagens.MSG_TIPO_CAD)
+                    tipo = tipoConta()
+                    erro = False
 
-            if tipo == 1:
-                print(mensagens.MSG_CAD_JOVEM)
+                    if tipo == 1:
+                        print(mensagens.MSG_CAD_JOVEM)
+                        erro = True if not cadastro.cadJovem() else False
+                    elif tipo == 2:
+                        print(mensagens.MSG_CAD_EMP)
+                        erro = True if not cadastro.cadEmpresa() else False
+                    elif tipo == 3:
+                        print(mensagens.MSG_CAD_INST)
+                        erro = True if not cadastro.cadInstituicao() else False
 
-                if not cadastro.cadJovem():
-                    print("Não foi possivel criar o usuario")
-                    break
-            elif tipo == 2:
-                print(mensagens.MSG_CAD_EMP)
+                    banco[1].close()
+                    banco[0].close()
 
-                if not cadastro.cadEmpresa():
-                    print("Não foi possível criar a empresa")
-                    break
-            elif tipo == 3:
-                print(mensagens.MSG_CAD_INST)
+                    if erro == False:
+                        print("Cadastro criado com sucesso!")
+                        break
+                    else:
+                        print("Não foi possivel completar o cadastro")
+                        continue
 
-                if not cadastro.cadInstituicao():
-                    print("Não foi possível criar a instituição") 
-                    break
-
-
-            print("Cadastro criado com sucesso!")
-
-
-
-
-            
         elif conf_login != "Sim":
             print("Por favor, digite apenas sim ou não")
             continue
+
+        return
+
+def logar():
+    while True:
+        print(mensagens.MSG_TIPO_LOGIN)
+        tipo = tipoConta()
+        Usuario = False
+
+        banco = conexao()
+        login = Login(banco[0], banco[1])
+
+        if tipo == 1:
+            Usuario = login.logarJovem()
+        elif tipo == 2:
+            Usuario = login.logarEmpresa()
+        elif tipo == 3:
+            Usuario = login.logarInstituicao()
+
+        if not Usuario:
+            print("Erro: Não foi possível logar")
+            continue
+
+        return Usuario
+
+
+def main():
+    telaInicial()
+    Usuario = logar()
+    Usuario.info()
+
 
 """
 
@@ -125,3 +150,5 @@ while True:
 
 
 """
+if __name__ == '__main__':
+    main()

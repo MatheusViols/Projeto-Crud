@@ -21,16 +21,19 @@ class Valida:
             return False
 
 
+        return True
+    
+    def CPFExiste(self, CPF):
         self.__cursor.execute(f"SELECT CPF FROM usuario WHERE CPF = '{CPF}';")
         fetch_CPF = self.__cursor.fetchone()
         if fetch_CPF and fetch_CPF[0] == CPF:
-            print("Erro: CPF já está cadastrado")
-            return False
+            return True
+
+        return False
 
 
-        return True
 
-    def CNPJEmp(self, CNPJ):
+    def CNPJ(self, CNPJ):
         if not CNPJ:
             return False
         elif re.search(r'[^0-9]', CNPJ):
@@ -41,34 +44,23 @@ class Valida:
             return False
 
 
+        return True
+
+    def CNPJEmpExiste(self, CNPJ):
         self.__cursor.execute(f"SELECT CNPJ FROM empresa WHERE CNPJ = '{CNPJ}';")
         fetch_CNPJ = self.__cursor.fetchone()
         if fetch_CNPJ and fetch_CNPJ[0] == CNPJ:
-            print("Erro: CNPJ já está cadastrado")
-            return False
+            return True
+        return False
 
 
-        return True
-
-    def CNPJInst(self, CNPJ):
-        if not CNPJ:
-            return False
-        elif re.search(r'[^0-9]', CNPJ):
-            print("Erro: CNPJ aceita apenas números")
-            return False
-        elif len(CNPJ) < 14:
-            print("Erro: CNPJ tem o número fixo de 14 digitos")
-            return False
-
+    def CNPJInstExiste(self, CNPJ):
 
         self.__cursor.execute(f"SELECT CNPJ FROM instituicao WHERE CNPJ = '{CNPJ}';")
         fetch_CNPJ = self.__cursor.fetchone()
         if fetch_CNPJ and fetch_CNPJ[0] == CNPJ:
-            print("Erro: CNPJ já está cadastrado")
-            return False
-
-
-        return True
+            return True
+        return False
 
     def Nome(self, nome_comp):
         if not nome_comp or nome_comp.isspace():

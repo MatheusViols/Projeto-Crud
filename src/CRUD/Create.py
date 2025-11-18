@@ -12,6 +12,9 @@ class Create:
         CPF = input("CPF: ")
         if not self.__validar.CPF(CPF):
             return False
+        if self.__validar.CPFExiste(CPF):
+            print("ERRO: CPF Já cadastrado")
+            return False
 
         nome_comp = input("Nome completo: ")
         if not self.__validar.Nome(nome_comp):
@@ -63,7 +66,10 @@ class Create:
         
     def cadEmpresa(self):
         CNPJ = input("CNPJ: ")
-        if not self.__validar.CNPJEmp(CNPJ):
+        if not self.__validar.CNPJ(CNPJ):
+            return False
+        if self.__validar.CNPJEmpExiste(CNPJ):
+            print("Erro: CNPJ já cadastrado")
             return False
 
         nome_emp = input("Nome completo: ")
@@ -103,7 +109,10 @@ class Create:
 
     def cadInstituicao(self):
         CNPJ = input("CNPJ: ")
-        if not self.__validar.CNPJInst(CNPJ):
+        if not self.__validar.CNPJ(CNPJ):
+            return False
+        if self.__validar.CNPJInstExiste(CNPJ):
+            print("Erro: CNPJ já cadastrado")
             return False
 
         nome_inst = input("Nome Instituição: ")
