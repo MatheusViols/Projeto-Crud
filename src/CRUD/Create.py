@@ -1,5 +1,7 @@
 from Mensagens import mensagens
 from CRUD.Valida import Valida
+
+import mysql.connector
  
 
 class Create:
@@ -7,6 +9,23 @@ class Create:
         self.__cnx = cnx
         self.__cursor = cursor
         self.__validar = Valida(cnx, cursor)
+
+        self.JOVEM_ATRIBUTOS = "usuario(CPF, senha, nome_comp, data_nasc, telefone, endereco, desc_user, cod_area, cod_bairro)"
+        self.EMP_ATRIBUTOS = "empresa(CNPJ, senha, nome_emp, endereco, desc_emp, cod_bairro)"
+        self.INST_ATRIBUTOS = "instituicao(CNPJ, senha, nome_inst, endereco, desc_inst, cod_bairro)"
+
+
+
+
+    def insert(self, tabela, valores):
+        try:
+            self.__cursor.execute(f"INSERT INTO {tabela} VALUES({valores});")
+            self.__cnx.commit()
+            return True
+        except mysql.connector.errors.DatabaseError:
+            print("Erro: Algo deu errado durante a inserção de dados, cadastro não finalizado")
+            return False
+
 
     def cadJovem(self):
         CPF = input("CPF: ")
@@ -54,14 +73,10 @@ class Create:
         if not self.__validar.Senha(senha, conf_senha):
             return False
 
+        
 
-        try:
-            self.__cursor.execute(f"INSERT INTO usuario(CPF, senha, nome_comp, data_nasc, telefone, endereco, desc_user, cod_area, cod_bairro) VALUES('{CPF}', '{senha}', '{nome_comp}', '{ano}-{mes}-{dia}', '{telefone}', '{endereco}', '{desc_user}', {area}, {bairro});")
-            self.__cnx.commit()
-            return True
-        except mysql.connector.erros.DatabaseError:
-            print("Erro: Algo deu errado durante a inserção de dados, cadastro não finalizado")
-            return False
+        valores = f"'{CPF}', '{senha}', '{nome_comp}', '{ano}-{mes}-{dia}', '{telefone}', '{endereco}', '{desc_user}', {area}, {bairro}"
+        return (True if self.insert(self.JOVEM_ATRIBUTOS, valores) else False)
 
         
     def cadEmpresa(self):
@@ -96,13 +111,8 @@ class Create:
             return False
 
 
-        try:
-            self.__cursor.execute(f"INSERT INTO empresa(CNPJ, senha, nome_emp, endereco, desc_emp, cod_bairro) VALUES('{CNPJ}', '{senha}', '{nome_emp}', '{endereco}', '{desc_emp}', {bairro});")
-            self.__cnx.commit()
-            return True
-        except mysql.connector.erros.DatabaseError:
-            print("Erro: Algo deu errado durante a inserção de dados, cadastro não finalizado")
-            return False
+        valores = f"'{CNPJ}', '{senha}', '{nome_emp}', '{endereco}', '{desc_emp}', {bairro}"
+        return (True if self.insert(self.EMP_ATRIBUTOS, valores) else False)
          
 
             
@@ -139,10 +149,6 @@ class Create:
             return False
 
 
-        try:
-            self.__cursor.execute(f"INSERT INTO instituicao(CNPJ, senha, nome_inst, endereco, desc_inst, cod_bairro) VALUES('{CNPJ}', '{senha}', '{nome_inst}', '{endereco}', '{desc_inst}', {bairro});")
-            self.__cnx.commit()
-            return True
-        except mysql.connector.erros.DatabaseError:
-            print("Erro: Algo deu errado durante a inserção de dados, cadastro não finalizado")
-            return False
+        valores = f"'{CNPJ}', '{senha}', '{nome_inst}', '{endereco}', '{desc_inst}', {bairro}"
+        return (True if self.insert(self.INST_ATRIBUTOS, valores) else False)
+

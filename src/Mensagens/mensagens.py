@@ -8,6 +8,8 @@ MSG_INICIAL = """
 
             Antes de tudo, você já possui login?
             (Responda com Sim ou Não)
+            Se deseja sair do programa, digite Sair
+
 
 
 """

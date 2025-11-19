@@ -30,8 +30,8 @@ def tipoConta():
 def telaInicial():
     while True:
         print(mensagens.MSG_INICIAL)
-        conf_login = input("     ->")
-        if conf_login == "Não":
+        conf_login = input("     ->").lower()
+        if conf_login == "não":
             while True:
                     banco = conexao()
                     cadastro = Create(banco[0], banco[1])
@@ -59,7 +59,7 @@ def telaInicial():
                         print("Não foi possivel completar o cadastro")
                         continue
 
-        elif conf_login != "Sim":
+        elif conf_login != "sim":
             print("Por favor, digite apenas sim ou não")
             continue
 

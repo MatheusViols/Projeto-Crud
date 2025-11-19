@@ -72,7 +72,7 @@ class Valida:
         if not dia or not mes or not ano:
             return False
         elif " " in dia or " " in mes or " " in ano:
-            print("Erro: Data não aceita uso de espaços")
+                print("Erro: Data não aceita uso de espaços")
             return False
         elif len(dia) != 2 or len(mes) != 2 or len(ano) != 4:
             print("Erro: Dia e mes devem conter dois digitos, ano deve conter 4")
