@@ -22,7 +22,7 @@ class Valida:
 
 
         return True
-    
+
     def CPFExiste(self, CPF):
         self.__cursor.execute(f"SELECT CPF FROM usuario WHERE CPF = '{CPF}';")
         fetch_CPF = self.__cursor.fetchone()
@@ -39,7 +39,7 @@ class Valida:
         elif re.search(r'[^0-9]', CNPJ):
             print("Erro: CNPJ aceita apenas números")
             return False
-        elif len(CNPJ) < 14:
+        elif len(CNPJ) != 14:
             print("Erro: CNPJ tem o número fixo de 14 digitos")
             return False
 
@@ -72,7 +72,7 @@ class Valida:
         if not dia or not mes or not ano:
             return False
         elif " " in dia or " " in mes or " " in ano:
-                print("Erro: Data não aceita uso de espaços")
+            print("Erro: Data não aceita uso de espaços")
             return False
         elif len(dia) != 2 or len(mes) != 2 or len(ano) != 4:
             print("Erro: Dia e mes devem conter dois digitos, ano deve conter 4")
@@ -95,7 +95,7 @@ class Valida:
 
 
         return True
-        
+
     def Telefone(self, telefone):
         if not telefone:
             print("Erro: telefone não pode ser vazio")
@@ -111,7 +111,7 @@ class Valida:
             return False
 
         return True
-        
+
 
 
     def Bairro(self, bairro):
@@ -126,7 +126,7 @@ class Valida:
             return False
 
         return True
-    
+
     def Endereco(self, endereco):
         if not endereco or endereco.isspace():
             print("Erro: Endereço não pode ser vazio")
@@ -164,7 +164,7 @@ class Valida:
             print("Erro: Senha não pode ter espaços em branco")
             return False
         elif len(senha) < 5 or len(senha) > 11:
-            pritn("Erro: Senha precisa ter entre 5 a 11 digitos")
+            print("Erro: Senha precisa ter entre 5 a 11 digitos")
             return False
 
 
