@@ -9,7 +9,6 @@ import mysql.connector
 
 
 
-
 def conexao():
     cnx = mysql.connector.connect(user='crud-user', password='crud-user', host='localhost', database='crud') 
     cursor = cnx.cursor()

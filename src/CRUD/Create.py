@@ -31,7 +31,7 @@ class Create:
         CPF = input("CPF: ")
         if not self.__validar.CPF(CPF):
             return False
-        if self.__validar.CPFExiste(CPF):
+        if self.__validar.chaveExiste('CPF', 'usuario', CPF):
             print("ERRO: CPF Já cadastrado")
             return False
 
@@ -83,7 +83,7 @@ class Create:
         CNPJ = input("CNPJ: ")
         if not self.__validar.CNPJ(CNPJ):
             return False
-        if self.__validar.CNPJEmpExiste(CNPJ):
+        if self.__validar.chaveExiste('CNPJ', 'empresa', CNPJ):
             print("Erro: CNPJ já cadastrado")
             return False
 
@@ -121,7 +121,7 @@ class Create:
         CNPJ = input("CNPJ: ")
         if not self.__validar.CNPJ(CNPJ):
             return False
-        if self.__validar.CNPJInstExiste(CNPJ):
+        if self.__validar.chaveExiste('CNPJ', 'instituicao', CNPJ):
             print("Erro: CNPJ já cadastrado")
             return False
 
