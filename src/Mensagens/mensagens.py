@@ -95,8 +95,18 @@ MSG_COD_AREA = """
 
 """
 
+MSG_COD_TURNO = """
++------+---------------------------+
+| Cod. | Turno                     |
++------+---------------------------+
+| 1    | Manhã                     |
+| 2    | Tarde                     |
+| 3    | Noite                     |
++------+---------------------------+
+
+"""
 MSG_DESC = """
-            Agora nos dê uma breve descrição pessoal de no maximo
+            Agora nos dê uma breve descrição de no maximo
             100 caracteres, tente não passar disso, a partir do
             caractere 100 tudo será ignorado e sua descrição ficará
             incompleta

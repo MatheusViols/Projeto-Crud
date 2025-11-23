@@ -14,6 +14,12 @@ class Create:
         self.EMP_ATRIBUTOS = "empresa(CNPJ, senha, nome_emp, endereco, desc_emp, cod_bairro)"
         self.INST_ATRIBUTOS = "instituicao(CNPJ, senha, nome_inst, endereco, desc_inst, cod_bairro)"
 
+        self.CURSO_ATRIBUTOS = "curso(nome_curso, quant_vagas, desc_curso, cod_area, cod_turno, CNPJ, cod_bairro)"
+        self.VAGA_ATRIBUTOS = "vaga(nome_vaga, quant_vagas, desc_vaga, cod_area, cod_turno, CNPJ, cod_bairro)"
+
+
+        self.APLI_ATRIBUTOS = "aplica(CPF, cod_vaga)"
+
 
 
 
@@ -25,6 +31,11 @@ class Create:
         except mysql.connector.errors.DatabaseError:
             print("Erro: Algo deu errado durante a inserção de dados, cadastro não finalizado")
             return False
+
+    def insertERRO(self, tabela, valores):
+            self.__cursor.execute(f"INSERT INTO {tabela} VALUES({valores});")
+            self.__cnx.commit()
+            return True
 
 
     def cadJovem(self):
@@ -59,7 +70,7 @@ class Create:
             return False
 
         print(mensagens.MSG_COD_AREA)
-        area = input("Área: ")
+        area = input("Código da área: ")
         if not self.__validar.Area(area):
             return False
 
@@ -151,4 +162,98 @@ class Create:
 
         valores = f"'{CNPJ}', '{senha}', '{nome_inst}', '{endereco}', '{desc_inst}', {bairro}"
         return (True if self.insert(self.INST_ATRIBUTOS, valores) else False)
+
+    def cadCurso(self, CNPJ, cod_bairro):
+        nome_curso = input("Nome do curso: ")
+        if not self.__validar.nomeCurso(nome_curso):
+            return False
+
+        quant_vagas = 0
+        while True:
+            try:
+                quant_vagas = int(input("Quantidade de vagas: "))
+                break
+            except ValueError:
+                print("Por favor, digite apenas números")
+                continue
+            except OverflowError:
+                print("Por favor, digite uma quantidade realista")
+                continue
+
+            if quant_vagas > 500:
+                print("Por favor, digite uma quantidade realista")
+                continue
+
+        print(mensagens.MSG_DESC)
+        desc_curso = input("Descrição: ")
+        desc_curso = self.__validar.Desc(desc_curso)
+
+        
+        print(mensagens.MSG_COD_AREA)
+        cod_area = input("Código da área: ")
+        if not self.__validar.Area(cod_area):
+            return False
+
+        print(mensagens.MSG_COD_TURNO)
+        cod_turno = input("Código de turno: ")
+        if not self.__validar.Turno(cod_turno):
+            return False
+
+        valores = f"'{nome_curso}', {quant_vagas}, '{desc_curso}', {cod_area}, {cod_turno}, '{CNPJ}', {cod_bairro}"
+        return (True if self.insert(self.CURSO_ATRIBUTOS, valores) else False)
+
+
+    def cadVaga(self, CNPJ, cod_bairro):
+        nome_vaga = input("Nome da vaga: ")
+        if not self.__validar.nomeVaga(nome_vaga):
+            return False
+
+        quant_vagas = 0
+        while True:
+            try:
+                quant_vagas = int(input("Quantidade de vagas: "))
+                break
+            except ValueError:
+                print("Por favor, digite apenas números")
+                continue
+            except OverflowError:
+                print("Por favor, digite uma quantidade realista")
+                continue
+
+            if quant_vagas > 500:
+                print("Por favor, digite uma quantidade realista")
+                continue
+
+        print(mensagens.MSG_DESC)
+        desc_vaga = input("Descrição: ")
+        desc_vaga = self.__validar.Desc(desc_vaga)
+
+        
+        print(mensagens.MSG_COD_AREA)
+        cod_area = input("Código da área: ")
+        if not self.__validar.Area(cod_area):
+            return False
+
+        print(mensagens.MSG_COD_TURNO)
+        cod_turno = input("Código de turno: ")
+        if not self.__validar.Turno(cod_turno):
+            return False
+
+        valores = f"'{nome_vaga}', {quant_vagas}, '{desc_vaga}', {cod_area}, {cod_turno}, '{CNPJ}', {cod_bairro}"
+        return (True if self.insert(self.VAGA_ATRIBUTOS, valores) else False)
+
+    def cadAplicacao(self, CPF, cod_vaga):
+        valores = f"'{CPF}', {cod_vaga}"
+        return (True if self.insert(self.APLI_ATRIBUTOS, valores) else False)
+
+
+
+
+
+
+
+
+
+        
+        
 

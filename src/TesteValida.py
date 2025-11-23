@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from CRUD.Valida import Valida
 
 import mysql.connector
-import sys
+import os
 
 cnx = mysql.connector.connect(user='crud-user', password='crud-user', host='localhost', database='crud')
 cursor = cnx.cursor()
@@ -10,6 +10,8 @@ cursor = cnx.cursor()
 
 validar = Valida(cnx, cursor)
 
+MOSTRAR_MSG_ERRO = False
+COMANDO_CLEAR = 'cls' if os.name=='nt' else 'clear' 
 
 vazios = (
     validar.CPF(""),
@@ -59,6 +61,9 @@ def buscaErro(lista, tipo_teste):
         if erro == True:
             print(f"Erro: {tipo_teste}  Teste Nº{cont}")
     print(f"{tipo_teste}: Validação segura")
+
+if not MOSTRAR_MSG_ERRO: 
+    os.system(COMANDO_CLEAR)
 
 buscaErro(vazios, "Inserção de campos vazios")
 buscaErro(naoNumerais, "Inserção de não numerais")

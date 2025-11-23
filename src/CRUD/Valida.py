@@ -159,3 +159,25 @@ class Valida:
             return False
 
         return True
+
+    def nomeCurso(self, nome_comp):
+        if self.campoVazio(nome_comp):
+            return False
+
+        return True
+
+    def nomeVaga(self, nome_comp):
+        if self.campoVazio(nome_comp):
+            return False
+
+        return True
+
+    def Turno(self, cod_turno):
+        if self.campoVazio(cod_turno):
+            return False
+        elif self.naoNumero(cod_turno):
+            return False
+        elif self.foraDe(int(cod_turno), 1, 3):
+            return False
+
+        return True

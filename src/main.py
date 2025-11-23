@@ -5,6 +5,8 @@ from Login import Login
 
 from Mensagens import mensagens
 
+import TesteValida
+
 import mysql.connector
 
 
@@ -17,7 +19,11 @@ def conexao():
 
 def tipoConta():
     while True:
-        tipo_conta = int(input("     -> "))
+        try:
+            tipo_conta = int(input("     -> "))
+        except ValueError:
+            print("Por favor, digite apenas números")
+            continue
 
         if tipo_conta not in range(1, 4):
             print(f"\nErro: {tipo_conta} não é uma opção\n")
@@ -91,6 +97,7 @@ def main():
     telaInicial()
     Usuario = logar()
     Usuario.info()
+
 
 
 if __name__ == '__main__':

@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS instituicao
 
 CREATE TABLE IF NOT EXISTS curso
 (
-	cod_curso int not null unique primary key,
+	cod_curso int not null unique primary key AUTO_INCREMENT,
 	nome_curso varchar(20) not null,
 	quant_vagas int not null,
 
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS curso
 
 CREATE TABLE IF NOT EXISTS vaga
 (
-	cod_vaga int not null unique primary key,
+	cod_vaga int not null unique primary key AUTO_INCREMENT,
 	nome_vaga varchar(20) not null,
 	quant_vagas int not null,
 
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS matricula
 	CPF varchar(11) not null,
 	cod_curso int not null,
 
-	status_mat boolean not null
+	status_mat boolean not null DEFAULT False
 
 );
 
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS aplica
 	CPF varchar(11) not null,
 	cod_vaga int not null,
 	
-	status_apli boolean not null
+	status_apli boolean not null DEFAULT False
 
 );
 
@@ -197,5 +197,7 @@ INSERT INTO usuario(CPF, senha, nome_comp, data_nasc, telefone, endereco, desc_u
 
 INSERT INTO empresa(CNPJ, senha, nome_emp, endereco, desc_emp, cod_bairro) VALUES('12345678912345', 'sarahbonito', 'Bonito Generation', 'Rua Padre Canhão', 'Empresa do ramo criativo', 19);
 
-INSERT INTO instituicao(CNPJ, senha, nome_inst, endereco, desc_inst, cod_bairro) VAlues('12345678912345', 'jr', 'Unesp', 'Avenida fim do mundo', 'Universidade com mais de 90 anos de história em pernambuco', 22);
+INSERT INTO instituicao(CNPJ, senha, nome_inst, endereco, desc_inst, cod_bairro) VALUES('12345678912345', 'janeremover', 'Unesp', 'Avenida fim do mundo', 'Universidade com mais de 90 anos de história em pernambuco', 22);
+
+INSERT INTO vaga(nome_vaga, quant_vagas, desc_vaga, cod_area, cod_turno, CNPJ, cod_bairro) VALUES('Dev BackEnd', 1, 'Desenvolvedor BackEnd RAPAZ!', 1, 3, '12345678912345', 19);
 "

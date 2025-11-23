@@ -27,7 +27,7 @@ class Login:
         if not self.__validar.Senha(senha, conf_senha):
             return False
 
-        if self.__validar.CPFExiste(CPF):
+        if self.__validar.chaveExiste('CPF', 'usuario', CPF):
             select_senha = self.selectWHERE('senha', 'usuario', 'CPF', CPF)
 
             if select_senha and select_senha[0] == senha:
@@ -51,7 +51,7 @@ class Login:
         if not self.__validar.Senha(senha, conf_senha):
             return False
 
-        if self.__validar.CNPJEmpExiste(CNPJ):
+        if self.__validar.chaveExiste('CNPJ', 'empresa', CNPJ):
             select_senha = self.selectWHERE('senha', 'empresa', 'CNPJ', CNPJ)
 
             if select_senha and select_senha[0] == senha:
@@ -72,14 +72,14 @@ class Login:
         if not self.__validar.Senha(senha, conf_senha):
             return False
 
-        if self.__validar.CNPJInstExiste(CNPJ):
+        if self.__validar.chaveExiste('CNPJ', 'instituicao', CNPJ):
             select_senha = self.selectWHERE('senha', 'instituicao', 'CNPJ', CNPJ)
 
             if select_senha and select_senha[0] == senha:
                 user = self.selectWHERE('*', 'instituicao', 'CNPJ', CNPJ)
                 bairro = self.selectWHERE('nome_bairro', 'bairro', 'cod_bairro', user[5])
 
-                return Instituicao(fetch_user, fetch_bairro[0])
+                return Instituicao(user, bairro[0])
 
         return False
     
