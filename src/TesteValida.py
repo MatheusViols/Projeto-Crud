@@ -1,14 +1,13 @@
 from dataclasses import dataclass
 from CRUD.Valida import Valida
 
+from Dados import *
+
 import mysql.connector
 import os
 
-cnx = mysql.connector.connect(user='crud-user', password='crud-user', host='localhost', database='crud')
-cursor = cnx.cursor()
-
-
-validar = Valida(cnx, cursor)
+chave = Chave()
+validar = Valida(chave)
 
 MOSTRAR_MSG_ERRO = False
 COMANDO_CLEAR = 'cls' if os.name=='nt' else 'clear' 

@@ -5,10 +5,10 @@ import mysql.connector
  
 
 class Create:
-    def __init__(self, cnx, cursor):
-        self.__cnx = cnx
-        self.__cursor = cursor
-        self.__validar = Valida(cnx, cursor)
+    def __init__(self, chave):
+        self.__cnx = chave.cnx
+        self.__cursor = chave.cursor
+        self.__validar = Valida(chave)
 
         self.JOVEM_ATRIBUTOS = "usuario(CPF, senha, nome_comp, data_nasc, telefone, endereco, desc_user, cod_area, cod_bairro)"
         self.EMP_ATRIBUTOS = "empresa(CNPJ, senha, nome_emp, endereco, desc_emp, cod_bairro)"
@@ -19,6 +19,7 @@ class Create:
 
 
         self.APLI_ATRIBUTOS = "aplica(CPF, cod_vaga)"
+        self.MAT_ATRIBUTOS = "matricula(CPF, cod_curso)"
 
 
 
@@ -245,6 +246,10 @@ class Create:
     def cadAplicacao(self, CPF, cod_vaga):
         valores = f"'{CPF}', {cod_vaga}"
         return (True if self.insert(self.APLI_ATRIBUTOS, valores) else False)
+
+    def cadMatricula(self, CPF, cod_curso):
+        valores = f"'{CPF}', {cod_curso}"
+        return (True if self.insert(self.MAT_ATRIBUTOS, valores) else False)
 
 
 

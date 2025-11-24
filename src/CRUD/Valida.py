@@ -6,9 +6,9 @@ from datetime import date
 import mysql.connector
 
 class Valida:
-    def __init__(self, cnx, cursor):
-        self.__cnx = cnx
-        self.__cursor = cursor
+    def __init__(self, chave):
+        self.__cnx = chave.cnx
+        self.__cursor = chave.cursor
 
     def campoVazio(self, campo):
         if not campo or campo.isspace():
@@ -40,9 +40,6 @@ class Valida:
             return True
         return False
                 
-
-
-
 
     def chaveExiste(self, chave, tabela, valor):
         self.__cursor.execute(f"SELECT {chave} FROM {tabela} WHERE {chave} = {valor}")

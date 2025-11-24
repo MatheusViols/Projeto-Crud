@@ -2,20 +2,13 @@ from CRUD.Create import Create
 from CRUD.Read import Read
 
 from Login import Login
-
 from Mensagens import mensagens
-
 import TesteValida
+
+from Dados import *
 
 import mysql.connector
 
-
-
-def conexao():
-    cnx = mysql.connector.connect(user='crud-user', password='crud-user', host='localhost', database='crud') 
-    cursor = cnx.cursor()
-
-    return cnx, cursor
 
 def tipoConta():
     while True:
@@ -38,8 +31,8 @@ def telaInicial():
         conf_login = input("     ->").lower()
         if conf_login == "não":
             while True:
-                    banco = conexao()
-                    cadastro = Create(banco[0], banco[1])
+                    chave = Chave()
+                    cadastro = Create(chave)
                     print(mensagens.MSG_TIPO_CAD)
                     tipo = tipoConta()
                     erro = False
@@ -54,8 +47,8 @@ def telaInicial():
                         print(mensagens.MSG_CAD_INST)
                         erro = True if not cadastro.cadInstituicao() else False
 
-                    banco[1].close()
-                    banco[0].close()
+                    chave.cursor.close()
+                    chave.cnx.close()
 
                     if erro == False:
                         print("Cadastro criado com sucesso!")
@@ -76,8 +69,8 @@ def logar():
         tipo = tipoConta()
         Usuario = False
 
-        banco = conexao()
-        login = Login(banco[0], banco[1])
+        chave = Chave()
+        login = Login(chave)
 
         if tipo == 1:
             Usuario = login.logarJovem()
@@ -97,6 +90,10 @@ def main():
     telaInicial()
     Usuario = logar()
     Usuario.info()
+
+    chave = Chave()
+    Usuario.verAplicacoes()
+    Usuario.verMatriculas()
 
 
 

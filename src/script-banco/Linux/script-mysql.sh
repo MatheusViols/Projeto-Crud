@@ -200,4 +200,6 @@ INSERT INTO empresa(CNPJ, senha, nome_emp, endereco, desc_emp, cod_bairro) VALUE
 INSERT INTO instituicao(CNPJ, senha, nome_inst, endereco, desc_inst, cod_bairro) VALUES('12345678912345', 'janeremover', 'Unesp', 'Avenida fim do mundo', 'Universidade com mais de 90 anos de história em pernambuco', 22);
 
 INSERT INTO vaga(nome_vaga, quant_vagas, desc_vaga, cod_area, cod_turno, CNPJ, cod_bairro) VALUES('Dev BackEnd', 1, 'Desenvolvedor BackEnd RAPAZ!', 1, 3, '12345678912345', 19);
+
+INSERT INTO curso(nome_curso, quant_vagas, desc_curso, cod_area, cod_turno, CNPJ, cod_bairro) VALUES('Python +', 1, 'Aprenda python para sair do nivel intermediario', 1, 1, '12345678912345', 22);
 "

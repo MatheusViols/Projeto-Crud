@@ -2,28 +2,20 @@ from CRUD.Create import Create
 import mysql.connector
 
 class Instituicao:
-    def __init__(self, atts, bairro):
-        self.__CNPJ = atts[0]
-        self.__senha = atts[1]
-        self.__nome_inst = atts[2]
-        self.__endereco = atts[3]
-        self.__desc = atts[4]
-        self.__cod_bairro = atts[5]
-
-
-        self.__nome_bairro = bairro 
+    def __init__(self, dados):
+        self.__dados = dados
 
         self.__cursos = None
         self.CURSO_ATRIBUTOS = "cod_curso, nome_curso, quant_vagas, desc_curso, cod_area, cod_turno"
 
     def info(self):
         print(f"""
-                CNPJ: {self.__CNPJ}
-                Nome: {self.__nome_inst}
-                Endereço: {self.__endereco}
-                Descrição: {self.__desc}
+                CNPJ: {self.__dados.CNPJ}
+                Nome: {self.__dados.nome_inst}
+                Endereço: {self.__dados.endereco}
+                Descrição: {self.__dados.desc_inst}
 
-                Bairro: {self.__nome_bairro} | Codigo {self.__cod_bairro} 
+                Bairro: {self.__dados.nome_bairro} | Codigo {self.__dados.cod_bairro} 
 
         """)
 
@@ -46,7 +38,7 @@ class Instituicao:
 
     def atualizaCursos(self, cursor):
         try:
-            cursor.execute(f"SELECT {self.CURSO_ATRIBUTOS} FROM curso WHERE CNPJ = '{self.__CNPJ}'")
+            cursor.execute(f"SELECT {self.CURSO_ATRIBUTOS} FROM curso WHERE CNPJ = '{self.__dados.CNPJ}'")
             self.__cursos = cursor.fetchall()
             return True
         except mysql.connector.errors.DatabaseError:
@@ -57,7 +49,7 @@ class Instituicao:
     def cadastrarCurso(self, cnx, cursor):
         cadastro = Create(cnx, cursor)
 
-        if not cadastro.cadCurso(self.__CNPJ, self.__cod_bairro):
+        if not cadastro.cadCurso(self.__dados.CNPJ, self.__dados.cod_bairro):
             return False
 
         return (True if self.atualizaCursos(cursor) else False)

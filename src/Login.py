@@ -1,20 +1,20 @@
 from CRUD.Valida import Valida
+from CRUD.Read import Read
+
 from Usuarios.Jovem import Jovem
 from Usuarios.Empresa import Empresa
 from Usuarios.Instituicao import Instituicao
 
-from dataclasses import dataclass
+from Dados import *
 
 class Login:
-    def __init__(self, cnx, cursor):
-        self.__cnx = cnx
-        self.__cursor = cursor
-        self.__validar = Valida(cnx, cursor)
+    def __init__(self, chave):
+        self.__chave = chave
+        self.__cnx = chave.cnx
+        self.__cursor = chave.cursor
+        self.__validar = Valida(chave)
+        self.__buscar = Read(chave)
 
-
-    def selectWHERE(self, atributo, tabela, comparativo, valor):
-        self.__cursor.execute( f"SELECT {atributo} FROM {tabela} WHERE {comparativo} = '{valor}';")
-        return self.__cursor.fetchone()
 
 
     def logarJovem(self):
@@ -22,22 +22,30 @@ class Login:
         if not self.__validar.CPF(CPF):
             return False
 
-        senha = input("Senha: ")
+        input_senha = input("Senha: ")
         conf_senha = input("Confirme a senha: ")
-        if not self.__validar.Senha(senha, conf_senha):
+        if not self.__validar.Senha(input_senha, conf_senha):
             return False
 
-        if self.__validar.chaveExiste('CPF', 'usuario', CPF):
-            select_senha = self.selectWHERE('senha', 'usuario', 'CPF', CPF)
+        if not self.__validar.chaveExiste('CPF', 'usuario', CPF):
+            print("Erro: Esse CPF não está cadastrado")
+            return False
 
-            if select_senha and select_senha[0] == senha:
-                user = self.selectWHERE('*', 'usuario', 'CPF', CPF)
-                area = self.selectWHERE('nome_area', 'area', 'cod_area', user[7])
-                bairro = self.selectWHERE('nome_bairro', 'bairro', 'cod_bairro', user[8])
+        atributos = 'u.*, nome_area, nome_bairro'
+        tabelas = 'usuario u, area a, bairro b'
+        filtro = f"u.CPF = '{CPF}' AND u.cod_area = a.cod_area AND u.cod_bairro = b.cod_bairro"
 
-                return Jovem(user, area[0], bairro[0])
+        try:
+            select = self.__buscar.selectOneWhere(atributos, tabelas, filtro)
+        except mysql.connector.errors.DatabaseError:
+            print("Algo deu errado, não foi possivel fazer o login")
+            return False
 
-        return False
+
+        dados = DadosJovem(select)
+
+        return Jovem(dados, self.__chave) if dados.senha == input_senha else False
+
 
 
 
@@ -46,41 +54,55 @@ class Login:
         if not self.__validar.CNPJ(CNPJ):
             return False
 
-        senha = input("Senha: ")
+        input_senha = input("Senha: ")
         conf_senha = input("Confirme a senha: ")
-        if not self.__validar.Senha(senha, conf_senha):
+        if not self.__validar.Senha(input_senha, conf_senha):
             return False
 
-        if self.__validar.chaveExiste('CNPJ', 'empresa', CNPJ):
-            select_senha = self.selectWHERE('senha', 'empresa', 'CNPJ', CNPJ)
+        if not self.__validar.chaveExiste('CNPJ', 'empresa', CNPJ):
+            print("Erro: CNPJ não cadastrado")
+            return False
 
-            if select_senha and select_senha[0] == senha:
-                user = self.selectWHERE('*', 'empresa', 'CNPJ', CNPJ)
-                bairro = self.selectWHERE('nome_bairro', 'bairro', 'cod_bairro', user[5])
+        atributos = 'e.*, nome_bairro'
+        tabelas = 'empresa e, bairro b'
+        filtro = f"e.CNPJ = '{CNPJ}' AND e.cod_bairro = b.cod_bairro"
 
-                return Empresa(user, bairro[0])
+        try:
+            select = self.__buscar.selectOneWhere(atributos, tabelas, filtro)
+        except mysql.connector.errors.DatabaseError:
+            print("")
+            return False
 
-        return False
+        dados = DadosEmpresa(select)
+
+        return Empresa(dados) if dados.senha == input_senha else False
 
     def logarInstituicao(self):
         CNPJ = input("CNPJ: ")
         if not self.__validar.CNPJ(CNPJ):
             return False
 
-        senha = input("Senha: ")
+        input_senha = input("Senha: ")
         conf_senha = input("Confirme a senha: ")
-        if not self.__validar.Senha(senha, conf_senha):
+        if not self.__validar.Senha(input_senha, conf_senha):
             return False
 
-        if self.__validar.chaveExiste('CNPJ', 'instituicao', CNPJ):
-            select_senha = self.selectWHERE('senha', 'instituicao', 'CNPJ', CNPJ)
+        if not self.__validar.chaveExiste('CNPJ', 'instituicao', CNPJ):
+            print("Erro: CNPJ não cadastrado")
+            return False
 
-            if select_senha and select_senha[0] == senha:
-                user = self.selectWHERE('*', 'instituicao', 'CNPJ', CNPJ)
-                bairro = self.selectWHERE('nome_bairro', 'bairro', 'cod_bairro', user[5])
+        atributos = 'i.*, nome_bairro'
+        tabelas = 'instituicao i, bairro b'
+        filtro = f"i.CNPJ = '{CNPJ}' AND i.cod_bairro = b.cod_bairro"
 
-                return Instituicao(user, bairro[0])
+        try:
+            select = self.__buscar.selectOneWhere(atributos, tabelas, filtro)
+        except mysql.connect.errors.DatabaseError:
+            print("Erro: Algo deu errado, não foi possivel logar")
+            return False
 
-        return False
+        dados = DadosIntituicao(select)
+
+        return Instituicao(dados) if dados.senha == input_senha else False
     
 

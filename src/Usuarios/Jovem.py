@@ -1,42 +1,36 @@
 from CRUD.Create import Create
 from CRUD.Read import Read
 
+#ERRO AO TENTAR CADASTROS QUE COM CHAVES QUE JÁ EXISTEM, PRECISA DE UM TESTE PARA ESPECIFICAR O ERRO
+
 class Jovem:
-    def __init__(self, atts, area, bairro):
-        self.__CPF = atts[0]
-        self.__senha = atts[1]
-        self.__nome_comp = atts[2]
-        self.__data_nasc = atts[3]
-        self.__telefone = atts[4]
-        self.__endereco = atts[5]
-        self.__desc = atts[6]
-
-        self.__cod_area = atts[7]
-        self.__cod_bairro = atts[8]
-
-        self.__nome_area = area 
-        self.__nome_bairro = bairro 
+    def __init__(self, dados, chave):
+        self.__dados = dados
+        self.__chave = chave
 
         self.__aplicacoes = None
         self.__matriculas = None
 
+        self.atualizaAplicacoes()
+        self.atualizaMatriculas()
+
 
     def info(self):
         print(f"""
-                CPF: {self.__CPF}
-                Nome: {self.__nome_comp}
-                Data de nascimento: {self.__data_nasc}
-                Telefone: {self.__telefone}
-                Endereço: {self.__endereco}
-                Descrição: {self.__desc}
+                CPF: {self.__dados.CPF}
+                Nome: {self.__dados.nome_comp}
+                Data de nascimento: {self.__dados.data_nasc}
+                Telefone: {self.__dados.telefone}
+                Endereço: {self.__dados.endereco}
+                Descrição: {self.__dados.desc_user}
 
-                Área: {self.__nome_area} Codigo: {self.__cod_area}
-                Bairro: {self.__nome_bairro} Codigo: {self.__cod_bairro}
+                Área: {self.__dados.nome_area} Codigo: {self.__dados.cod_area}
+                Bairro: {self.__dados.nome_bairro} Codigo: {self.__dados.cod_bairro}
         """)
 
 
-    def verVagas(self, cnx, cursor):
-        buscar = Read(cnx, cursor)
+    def verVagas(self):
+        buscar = Read(self.__chave)
         vagas = buscar.selectVagas(self.__cod_area)
         if not vagas:
             print("Nenhuma vaga encontrada")
@@ -54,7 +48,11 @@ class Jovem:
                 Descrição: {vaga[7]}
             """)
 
-    def verAplicacoes(self, cnx, cursor):
+    def verAplicacoes(self):
+        if not self.__aplicacoes:
+            print("Você não tem aplicações para nenhuma vaga")
+            return False
+
         for aplicacao in self.__aplicacoes:
             print(f"""
                 Nome: {aplicacao[0]}
@@ -64,25 +62,31 @@ class Jovem:
 
 
 
-    def aplicarVaga(self, cnx, cursor):
-        buscar = Read(cnx, cursor)
-        cadastro = Create(cnx, cursor)
+    def aplicarVaga(self):
+        buscar = Read(self.__chave)
+        cadastro = Create(self.__chave)
         
-        cod_vaga = int(input("Código da vaga: "))
+        while True:
+            try:
+                cod_vaga = int(input("Código da vaga: "))
+                break
+            except ValueError:
+                print("Código de vaga só pode ser um numero inteiro")
+                continue
 
-        vaga = buscar.selectWhere('cod_vaga', 'vaga', f'cod_vaga = {cod_vaga}')
+        vaga = buscar.selectOneWhere('cod_vaga', 'vaga', f'cod_vaga = {cod_vaga}')
         if not vaga:
             print("Não foi encontrada uma vaga com esse código")
             return False
 
-        if not cadastro.cadAplicacao(self.__CPF, cod_vaga):
+        if not cadastro.cadAplicacao(self.__dados.CPF, cod_vaga):
             return False
 
-        self.atualizaAplicacoes(cnx, cursor)
+        self.atualizaAplicacoes()
 
-    def atualizaAplicacoes(self, cnx, cursor):
-        buscar = Read(cnx, cursor)
-        aplicacoes = buscar.selectAplicacoes(self.__CPF)
+    def atualizaAplicacoes(self):
+        buscar = Read(self.__chave)
+        aplicacoes = buscar.selectAplicacoes(self.__dados.CPF)
         if not aplicacoes:
             return False
         self.__aplicacoes = aplicacoes
@@ -90,6 +94,70 @@ class Jovem:
 
 
 
+    def verCursos(self):
+        buscar = Read(self.__chave)
+        cursos = buscar.selectCursos(self.__dados.cod_area)
+        if not cursos:
+            print("Nenhum curso encontrado")
+            return False
 
+        for curso in cursos:
+            print(f"""
+                Codigo: {curso[0]} | Nome: {curso[1]}
+                Instituição: {curso[6]}
+                Área: {curso[4]}
+                Turno: {curso[5]}
+                Bairro: {curso[7]}
+                Vagas: {curso[2]}
+
+                Descrição: {curso[3]}
+            """)
+        
+    def verMatriculas(self):
+        if not self.__matriculas:
+            print("Você ainda não tem nenhuma matricula")
+            return False
+        for matricula in self.__matriculas:
+            print(f"""
+                Nome: {matricula[0]}
+                Status {'Em espera' if matricula[1] == 0 else 'Aprovada'}
+
+            """)
+
+        
     def matricularCurso(self):
-        pass
+        cadastrar = Create(self.__chave)
+        buscar = Read(self.__chave)
+
+        while True:
+            try:
+                cod_curso = int(input("Código de curso: "))
+                break
+            except ValueError:
+                print("Código de curso só pode ser um número inteiro")
+                continue
+
+        curso = buscar.selectOneWhere('cod_curso', 'curso', f'cod_curso = {cod_curso}')
+        if not curso:
+            print("Não foi encontrada um curso com esse código")
+            return False
+
+        if not cadastrar.cadMatricula(self.__dados.CPF, cod_curso):
+            return False
+
+        self.atualizaMatriculas()
+
+
+    def atualizaMatriculas(self):
+        buscar = Read(self.__chave)
+        matriculas = buscar.selectMatriculas(self.__dados.CPF)
+        if not matriculas:
+            print("Nada encontrado tonhão")
+            return False
+        print("Passa tonhão")
+        self.__matriculas = matriculas
+
+
+
+
+

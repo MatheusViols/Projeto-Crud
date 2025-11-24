@@ -1,27 +1,20 @@
 from CRUD.Create import Create
 
 class Empresa:
-    def __init__(self, atts, bairro):
-        self.__CNPJ = atts[0]
-        self.__senha = atts[1]
-        self.__nome_emp = atts[2]
-        self.__endereco = atts[3]
-        self.__desc = atts[4]
-        self.__cod_bairro = atts[5]
-
-        self.__bairro = bairro 
+    def __init__(self, dados):
+        self.__dados = dados
 
         self.__vagas = None
         self.VAGA_ATRIBUTOS = "cod_vaga, nome_vaga, quant_vagas, desc_vaga, cod_area, cod_turno"
 
     def info(self):
         print(f"""
-                CNPJ: {self.__CNPJ}
-                Nome: {self.__nome_emp}
-                Endereço: {self.__endereco}
-                Descrição: {self.__desc}
+                CNPJ: {self.__dados.CNPJ}
+                Nome: {self.__dados.nome_emp}
+                Endereço: {self.__dados.endereco}
+                Descrição: {self.__dados.desc_emp}
 
-                Bairro: {self.__bairro}  |  codigo: {self.__cod_bairro}
+                Bairro: {self.__dados.nome_bairro}  |  codigo: {self.__dados.cod_bairro}
         """)
 
     def mostrarVagas(self):
@@ -43,7 +36,7 @@ class Empresa:
 
     def atualizaVagas(self, cursor):
         try:
-            cursor.execute(f"SELECT {self.VAGA_ATRIBUTOS} FROM vaga WHERE CNPJ = '{self.__CNPJ}'")
+            cursor.execute(f"SELECT {self.VAGA_ATRIBUTOS} FROM vaga WHERE CNPJ = '{self.__dados.CNPJ}'")
             self.__vagas = cursor.fetchall()
             return True
         except mysql.connector.errors.DatabaseError:
@@ -54,7 +47,7 @@ class Empresa:
     def cadastrarVaga(self, cnx, cursor):
         cadastro = Create(cnx, cursor)
 
-        if not cadastro.cadVaga(self.__CNPJ, self.__cod_bairro):
+        if not cadastro.cadVaga(self.__dados.CNPJ, self.__dados.cod_bairro):
             return False
 
         return (True if self.atualizaVagas(cursor) else False)
