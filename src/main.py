@@ -91,6 +91,7 @@ def main():
     Usuario = logar()
     Usuario.info()
 
+
     chave = Chave()
     Usuario.verAplicacoes()
     Usuario.verMatriculas()
