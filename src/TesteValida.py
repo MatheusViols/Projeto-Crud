@@ -9,7 +9,7 @@ import os
 chave = Chave()
 validar = Valida(chave)
 
-MOSTRAR_MSG_ERRO = False
+MOSTRAR_MSG_ERRO = True
 COMANDO_CLEAR = 'cls' if os.name=='nt' else 'clear' 
 
 vazios = (

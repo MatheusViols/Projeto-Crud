@@ -31,12 +31,8 @@ class Login:
             print("Erro: Esse CPF não está cadastrado")
             return False
 
-        atributos = 'u.*, nome_area, nome_bairro'
-        tabelas = 'usuario u, area a, bairro b'
-        filtro = f"u.CPF = '{CPF}' AND u.cod_area = a.cod_area AND u.cod_bairro = b.cod_bairro"
-
         try:
-            select = self.__buscar.selectOneWhere(atributos, tabelas, filtro)
+            select = self.__buscar.selectJovem(CPF)
         except mysql.connector.errors.DatabaseError:
             print("Algo deu errado, não foi possivel fazer o login")
             return False
@@ -75,7 +71,7 @@ class Login:
 
         dados = DadosEmpresa(select)
 
-        return Empresa(dados) if dados.senha == input_senha else False
+        return Empresa(dados, self.__chave) if dados.senha == input_senha else False
 
     def logarInstituicao(self):
         CNPJ = input("CNPJ: ")
@@ -101,8 +97,8 @@ class Login:
             print("Erro: Algo deu errado, não foi possivel logar")
             return False
 
-        dados = DadosIntituicao(select)
+        dados = DadosInstituicao(select)
 
-        return Instituicao(dados) if dados.senha == input_senha else False
+        return Instituicao(dados, self.__chave) if dados.senha == input_senha else False
     
 

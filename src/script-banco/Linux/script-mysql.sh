@@ -128,14 +128,14 @@ ADD CONSTRAINT fk_area_curso FOREIGN KEY (cod_area)  REFERENCES area(cod_area),
 ADD CONSTRAINT fk_turno_curso FOREIGN KEY (cod_turno) REFERENCES turno(cod_turno),
 
 ADD CONSTRAINT fk_CNPJ_curso FOREIGN KEY (CNPJ) REFERENCES instituicao(CNPJ),
-ADD CONSTRAINT fk_bairro_curso FOREIGN KEY (cod_bairro) REFERENCES instituicao(cod_bairro);
+ADD CONSTRAINT fk_bairro_curso FOREIGN KEY (cod_bairro) REFERENCES instituicao(cod_bairro) ON UPDATE CASCADE;
 
 ALTER TABLE vaga
 ADD CONSTRAINT fk_area_vaga FOREIGN KEY (cod_area) REFERENCES area(cod_area),
 ADD CONSTRAINT fk_turno_vaga FOREIGN KEY (cod_turno) REFERENCES turno(cod_turno),
 
 ADD CONSTRAINT fk_CNPJ_vaga FOREIGN KEY (CNPJ) REFERENCES empresa(CNPJ),
-ADD CONSTRAINT fk_bairro_vaga FOREIGN KEY (cod_bairro) REFERENCES empresa(cod_bairro);
+ADD CONSTRAINT fk_bairro_vaga FOREIGN KEY (cod_bairro) REFERENCES empresa(cod_bairro) ON UPDATE CASCADE;
 
 ALTER TABLE matricula
 ADD CONSTRAINT fk_CPF_mat FOREIGN KEY (CPF) REFERENCES usuario(CPF),

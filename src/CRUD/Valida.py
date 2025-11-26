@@ -42,7 +42,7 @@ class Valida:
                 
 
     def chaveExiste(self, chave, tabela, valor):
-        self.__cursor.execute(f"SELECT {chave} FROM {tabela} WHERE {chave} = {valor}")
+        self.__cursor.execute(f"SELECT {chave} FROM {tabela} WHERE {chave} = '{valor}'")
         chave = self.__cursor.fetchone()
         if chave and chave[0] == valor:
             return True
@@ -141,8 +141,8 @@ class Valida:
 
     def Desc(self, desc):
         if len(desc) > 100:
-            return desc[0:100]
-        return desc
+            return False
+        return True
 
     def Senha(self, senha, conf_senha):
         if self.campoVazio(senha) or self.campoVazio(conf_senha):

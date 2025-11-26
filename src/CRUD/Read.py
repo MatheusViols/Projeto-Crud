@@ -53,6 +53,17 @@ class Read:
                 mat.cod_curso = c.cod_curso
                 """
 
+        self.JOVEM_SELECT ="""
+                SELECT
+                u.*, nome_area, nome_bairro
+                FROM
+                usuario u, area ar, bairro b
+                WHERE
+                u.CPF = '{}' AND
+                u.cod_area = ar.cod_area AND
+                u.cod_bairro = b.cod_bairro
+                """
+
 
 
 
@@ -64,6 +75,10 @@ class Read:
             print("Algo deu errado durante a execução, não foi possivel selecionar um elemento")
             return False
 
+    def selectOneWhereERRO(self, atributo, tabela, filtro):
+        self.__cursor.execute(f"SELECT {atributo} FROM {tabela} WHERE {filtro};")
+        return self.__cursor.fetchone()
+
     def selectAllWhere(self, atributo, tabela, filtro):
         try:
             self.__cursor.execute(f"SELECT {atributo} FROM {tabela} WHERE {filtro};")
@@ -71,6 +86,16 @@ class Read:
         except mysql.connector.errors.DatabaseError:
             print("Algo deu errado durante a execução, não foi possivel selecionar todos os elementos")
             return False
+
+
+    def selectJovem(self, CPF):
+        try:
+            self.__cursor.execute(self.JOVEM_SELECT.format(CPF))
+            return self.__cursor.fetchone()
+        except mysql.connector.errors.DatabaseError:
+            print("Algo deu errado durante a execução, não foi possivel selecionar usuario")
+            return False
+
 
     def selectVagas(self, cod_area):
         try:

@@ -89,12 +89,48 @@ def logar():
 def main():
     telaInicial()
     Usuario = logar()
+
     Usuario.info()
 
-
     chave = Chave()
-    Usuario.verAplicacoes()
-    Usuario.verMatriculas()
+
+    while True:
+        comandos = {
+            'Jovem':('ajuda', 'info', 'verVagas', 'verAplicacoes', 'aplicarVaga', 'verCursos', 'verMatriculas', 'matricularCurso', 'atualizarDados'),
+            'Empresa':('ajuda', 'info', 'mostrarVagas', 'cadastrarVaga', 'atualizarDados'),
+            'Instituição':('ajuda', 'info', 'mostrarCursos', 'cadastrarCurso', 'atualizarDados')
+                    }
+
+        uso = input("[Conecta Igarassu] $")
+        if uso == 'sair': return
+
+        if uso not in comandos[Usuario.tipo]:
+            print("Comando não encontrado")
+            continue
+
+        match uso:
+            case 'ajuda':
+                if Usuario.tipo == 'Jovem':
+                    print(mensagens.MSG_COMANDOS_JOVEM)
+                elif Usuario.tipo == 'Empresa':
+                    print(mensagens.MSG_COMANDOS_EMP)
+                else:
+                    print(mensagens.MSG_COMANDOS_INST)
+            case 'info': Usuario.info()
+            case 'verVagas': Usuario.verVagas()
+            case 'verAplicacoes': Usuario.verAplicacoes()
+            case 'aplicarVaga': Usuario.aplicarVaga()
+            case 'verCursos': Usuario.verCursos()
+            case 'verMatriculas': Usuario.verMatriculas()
+            case 'matricularCurso': Usuario.matricularCurso()
+            case 'atualizarDados': Usuario.atualizarDados()
+            case 'mostrarVagas': Usuario.mostrarVagas()
+            case 'cadastrarVaga': Usuario.cadastrarVaga()
+            case 'mostrarCursos': Usuario.mostrarCursos()
+            case 'cadastrarCurso': Usuario.cadastrarCurso()
+
+
+                
 
 
 

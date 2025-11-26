@@ -1,5 +1,6 @@
 from Mensagens import mensagens
 from CRUD.Valida import Valida
+from Dados import *
 
 import mysql.connector
  
@@ -40,55 +41,44 @@ class Create:
 
 
     def cadJovem(self):
-        CPF = input("CPF: ")
-        if not self.__validar.CPF(CPF):
-            return False
-        if self.__validar.chaveExiste('CPF', 'usuario', CPF):
+        input_CPF = InputValido('Digite seu CPF','CPF')
+        if not input_CPF.dado: return False
+        if self.__validar.chaveExiste('CPF', 'usuario', input_CPF):
             print("ERRO: CPF Já cadastrado")
             return False
 
-        nome_comp = input("Nome completo: ")
-        if not self.__validar.Nome(nome_comp):
-            return False
+        input_nome = InputValido('Digite seu nome', 'nome')
+        if not input_nome.dado: return False
 
-        dia = input("Dia de nascimento: ")
-        mes = input("Mês de nascimento: ")
-        ano = input("Ano de nascimento: ")
-        if not self.__validar.Data(dia, mes, ano):
-            return False
+        input_data = InputDataValida()
+        if not input_data.dado: return False
 
-        telefone = input("Telefone: ")
-        if not self.__validar.Telefone(telefone):
-            return False
+        input_telefone = InputValido('Digite seu telefone', 'telefone') 
+        if not input_telefone.dado: return False
 
         print(mensagens.MSG_COD_BAIRRO)
-        bairro = input("Bairro: ") 
-        if not self.__validar.Bairro(bairro):
-            return False
+        input_bairro = InputValido('Digite o código do seu bairro', 'bairro') 
+        if not input_bairro.dado: return False
 
-        endereco = input("Endereço: ")
-        if not self.__validar.Endereco(endereco):
-            return False
+        input_endereco = InputValido('Digite seu enderço', 'endereco')
+        if not input_endereco.dado: return False
 
         print(mensagens.MSG_COD_AREA)
-        area = input("Código da área: ")
-        if not self.__validar.Area(area):
-            return False
+        input_area = InputValido('Digite o código da sua área', 'area') 
+        if not input_area.dado: return False
 
         print(mensagens.MSG_DESC)
-        desc_user = input("Descrição: ")
-        desc_user = self.__validar.Desc(desc_user) 
+        input_desc = InputValido('Digite sua descrição', 'descricao')
+        if not input_desc.dado: return False
 
         print(mensagens.MSG_SENHA)
-        senha = input("Senha: ")
-        conf_senha = input("Confirme a senha: ")
-        if not self.__validar.Senha(senha, conf_senha):
-            return False
+        input_senha = InputValido('Digite sua senha: ', 'senha')
+        if not input_senha.dado: return False
 
         
 
-        valores = f"'{CPF}', '{senha}', '{nome_comp}', '{ano}-{mes}-{dia}', '{telefone}', '{endereco}', '{desc_user}', {area}, {bairro}"
-        return (True if self.insert(self.JOVEM_ATRIBUTOS, valores) else False)
+        valores = f"'{input_CPF.dado}', '{input_senha.dado}', '{input_nome.dado}', '{input_data.dado}', '{input_telefone.dado}', '{input_endereco.dado}', '{input_desc.dado}', {input_area.dado}, {input_bairro.dado}"
+        return (True if self.insertERRO(self.JOVEM_ATRIBUTOS, valores) else False)
 
         
     def cadEmpresa(self):
@@ -114,7 +104,9 @@ class Create:
 
         print(mensagens.MSG_DESC)
         desc_emp = input("Descrição: ")
-        desc_emp = self.__validar.Desc(desc_emp) 
+        if not self.__validar.Desc(desc_emp):
+            return False
+
 
         print(mensagens.MSG_SENHA)
         senha = input("Senha: ")
@@ -152,7 +144,8 @@ class Create:
 
         print(mensagens.MSG_DESC)
         desc_inst = input("Descrição: ")
-        desc_inst = self.__validar.Desc(desc_inst) 
+        if not self.__validar.Desc(desc_inst):
+            return False
 
         print(mensagens.MSG_SENHA)
         senha = input("Senha: ")
@@ -187,7 +180,8 @@ class Create:
 
         print(mensagens.MSG_DESC)
         desc_curso = input("Descrição: ")
-        desc_curso = self.__validar.Desc(desc_curso)
+        if not self.__validar.Desc(desc_curso):
+            return False
 
         
         print(mensagens.MSG_COD_AREA)
@@ -227,7 +221,8 @@ class Create:
 
         print(mensagens.MSG_DESC)
         desc_vaga = input("Descrição: ")
-        desc_vaga = self.__validar.Desc(desc_vaga)
+        if not self.__validar.Desc(desc_vaga):
+            return False
 
         
         print(mensagens.MSG_COD_AREA)
@@ -249,7 +244,7 @@ class Create:
 
     def cadMatricula(self, CPF, cod_curso):
         valores = f"'{CPF}', {cod_curso}"
-        return (True if self.insert(self.MAT_ATRIBUTOS, valores) else False)
+        return (True if self.insertERRO(self.MAT_ATRIBUTOS, valores) else False)
 
 
 

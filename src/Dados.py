@@ -1,10 +1,15 @@
+from CRUD.Valida import Valida
+
 import mysql.connector
 from dataclasses import dataclass
 
 @dataclass
 class Chave:
     def __init__(self):
-        self.cnx = mysql.connector.connect(user='crud-user', password='crud-user', database='crud')
+        self.cnx = mysql.connector.connect(user='crud-user',
+                                           password='crud-user',
+                                           database='crud',
+                                           buffered=True)
         self.cursor = self.cnx.cursor()
 
 
@@ -43,4 +48,84 @@ class DadosInstituicao:
         self.endereco = dados[3]
         self.desc_inst= dados[4]
         self.cod_bairro = dados[5]
-        self._nome_bairro = dados[6]
+        self.nome_bairro = dados[6]
+
+
+
+
+@dataclass
+class InputCPF():
+    def __init__(self):
+        while True:
+            validar = Valida(Chave())
+            input_CPF = input("CPF: ")
+
+            if validar.CPF(input_CPF): 
+                self.CPF = input_CPF
+                break
+            else: 
+                continue
+
+
+@dataclass
+class InputValido():
+    def __init__(self, msg_input, tipo_input):
+        while True:
+            validar = Valida(Chave())
+            dado = input(f"{msg_input}\n-> ")
+
+            match tipo_input:
+                case 'CPF': 
+                    validado = validar.CPF(dado)
+                case 'CNPJ': 
+                    validado = validar.CNPJ(dado)
+                case 'nome': 
+                    validado = validar.Nome(dado)
+                case 'telefone': 
+                    validado = validar.Telefone(dado)
+                case 'bairro': 
+                    validado = validar.Bairro(dado)
+                case 'endereco': 
+                    validado = validar.Endereco(dado)
+                case 'area': 
+                    validado = validar.Area(dado)
+                case 'descricao': 
+                    validado = validar.Desc(dado)
+                case 'nome_curso': 
+                    validado = validar.nomeCurso(dado)
+                case 'nome_vaga': 
+                    validado = validar.nomeVaga(dado)
+                case 'turno': 
+                    validado = validar.Turno(dado)
+                case 'senha':
+                    conf_dado = input("Confirme sua senha\n-> ")
+                    validado = validar.Senha(dado, conf_dado)
+                case 'sair':
+                    break
+                case _:
+                    print("Tipo de input não encontrado")
+                    return False
+
+            if validado:
+                self.dado = dado
+                break
+            else:
+                continue
+
+@dataclass
+class InputDataValida:
+    def __init__(self):
+        while True:
+            validar = Valida(Chave())
+
+            input_dia = input("Dia: ")
+            input_mes = input("Mês: ")
+            input_ano = input("Ano: ")
+
+            if validar.Data(input_dia, input_mes, input_ano):
+                self.dado = f"{input_ano}-{input_mes}-{input_dia}"
+                break
+            else:
+                continue
+
+

@@ -1,7 +1,11 @@
 from CRUD.Create import Create
 from CRUD.Read import Read
+from CRUD.Update import Update
+from CRUD.Valida import Valida
 
-#ERRO AO TENTAR CADASTROS QUE COM CHAVES QUE JÁ EXISTEM, PRECISA DE UM TESTE PARA ESPECIFICAR O ERRO
+from Dados import *
+
+#ERRO AO TENTAR CADASTROS COM CHAVES QUE JÁ EXISTEM, PRECISA DE UM TESTE PARA ESPECIFICAR O ERRO
 
 class Jovem:
     def __init__(self, dados, chave):
@@ -13,6 +17,8 @@ class Jovem:
 
         self.atualizaAplicacoes()
         self.atualizaMatriculas()
+
+        self.tipo = 'Jovem'
 
 
     def info(self):
@@ -31,7 +37,7 @@ class Jovem:
 
     def verVagas(self):
         buscar = Read(self.__chave)
-        vagas = buscar.selectVagas(self.__cod_area)
+        vagas = buscar.selectVagas(self.__dados.cod_area)
         if not vagas:
             print("Nenhuma vaga encontrada")
             return False
@@ -74,7 +80,15 @@ class Jovem:
                 print("Código de vaga só pode ser um numero inteiro")
                 continue
 
+        ap_existe = buscar.selectOneWhere('*',
+                                          'aplica',
+                                          f"CPF = '{self.__dados.CPF}' AND cod_vaga = {cod_vaga}")
+        if ap_existe:
+            print("Você já aplicou para essa vaga, apenas espere")
+            return
+
         vaga = buscar.selectOneWhere('cod_vaga', 'vaga', f'cod_vaga = {cod_vaga}')
+
         if not vaga:
             print("Não foi encontrada uma vaga com esse código")
             return False
@@ -137,7 +151,16 @@ class Jovem:
                 print("Código de curso só pode ser um número inteiro")
                 continue
 
+        mat_existe = buscar.selectOneWhere('*',
+                                           'matricula',
+                                           f"CPF = '{self.__dados.CPF}' AND cod_curso = {cod_curso}")
+
+        if mat_existe:
+            print("Você já está matriculado nesse curso, apenas aguarde")
+            return
+
         curso = buscar.selectOneWhere('cod_curso', 'curso', f'cod_curso = {cod_curso}')
+
         if not curso:
             print("Não foi encontrada um curso com esse código")
             return False
@@ -152,10 +175,57 @@ class Jovem:
         buscar = Read(self.__chave)
         matriculas = buscar.selectMatriculas(self.__dados.CPF)
         if not matriculas:
-            print("Nada encontrado tonhão")
+            print("Nenhuma matricula realizada")
             return False
-        print("Passa tonhão")
         self.__matriculas = matriculas
+
+
+
+    def atualizarDados(self):
+        while True:
+            dicio_dados = {
+                    '1':'nome_comp',
+                    '2':'data_nasc',
+                    '3':'telefone',
+                    '4':'endereco',
+                    '5':'desc_user',
+                    '6':'cod_bairro',
+                    '7':'cod_area'
+                                }
+            for codigo in dicio_dados:
+                print(f"{codigo} - {dicio_dados[codigo]}")
+
+            input_codigo = input("Digite o código para o tipo de dado que quer atualizar: ")
+            if input_codigo == 'sair': return 
+            if not input_codigo or input_codigo not in dicio_dados: 
+                print("Código não está na lista")
+                continue
+
+            valor = None
+            match input_codigo:
+                case '1': valor = InputValido('Digite o novo nome', 'nome') 
+                case '2': valor = InputDataValida() 
+                case '3': valor = InputValido('Digite o novo telefone', 'telefone') 
+                case '4': valor = InputValido('Digite o novo endereço', 'endereco')
+                case '5': valor = InputValido('Digite a nova descrição', 'descricao') 
+                case '6': valor = InputValido('Digite o novo codigo de bairro', 'bairro') 
+                case '7': valor = InputValido('Digite o novo codigo de area', 'area')
+                case _: return
+
+            atualizar = Update(self.__chave)
+            atualizar.updateWhere('usuario',
+                                  dicio_dados[input_codigo],
+                                  f"'{valor.dado}'",
+                                  f"CPF = '{self.__dados.CPF}' AND senha = '{self.__dados.senha}'")
+
+            buscar = Read(self.__chave)
+            select = buscar.selectOneWhere('u.*, nome_area, nome_bairro',
+                                                 'usuario u, area ar, bairro b',
+                                                 f"CPF = '{self.__dados.CPF}' AND senha = '{self.__dados.senha}'")
+            self.__dados = DadosJovem(select)
+
+
+
 
 
 

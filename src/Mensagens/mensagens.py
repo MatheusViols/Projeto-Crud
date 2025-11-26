@@ -146,5 +146,40 @@ MSG_LOGIN_EMP_INST = """
 
 """
 
+MSG_COMANDOS_JOVEM = """
+            ajuda - Mostra essa tela de ajuda para lembrar os comandos
+            info - Mostra suas informações
 
+            verVagas - Mostra vagas de acordo com a área do seu perfil
+            verAplicações - Mostra as aplicações que fez para vagas
+            aplicarVaga - Leva à opção de aplicar para uma nova vaga
 
+            verCursos - Mostra os cursos de acordo com a área do seu perfil
+            verMatriculas - Mostra as matriculas que fez para os cursos
+            matricularCurso - Leva à opção de matricular para um novo curso
+
+            atualizarDados - Leva à opção de atualizar os dados do seu perfil
+
+"""
+
+MSG_COMANDOS_EMP = """
+            ajuda - Mostra essa tela de ajuda para lembrar os comandos
+            info - Mostra suas informações
+
+            mostrarVagas - Mostra vagas que cadastrou 
+            cadastrarVaga - Leva à opção de cadastrar novas vagas
+
+            atualizarDados - Leva à opção de atualizar os dados do seu perfil
+
+"""
+
+MSG_COMANDOS_INST = """
+            ajuda - Mostra essa tela de ajuda para lembrar os comandos
+            info - Mostra suas informações
+
+            mostrarCursos - Mostra cursos que cadastrou 
+            cadastrarCurso - Leva à opção de cadastrar novos cursos
+
+            atualizarDados - Leva à opção de atualizar os dados do seu perfil
+
+"""
