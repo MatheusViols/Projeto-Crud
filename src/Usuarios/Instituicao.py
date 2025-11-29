@@ -1,6 +1,7 @@
 from CRUD.Create import Create
 from CRUD.Update import Update
 from CRUD.Read import Read
+from CRUD.Delete import Delete
 
 import mysql.connector
 
@@ -103,5 +104,24 @@ class Instituicao:
 
             self.__dados = DadosInstituicao(select)
 
+    def deletarConta(self):
+        print("Você tem total certeza de que deseja deletar sua conta?")
+        confirmacao = input("-> ").lower()
+
+        if confirmacao == 'sim':
+            input_senha = input("Digite a sua senha: ")
+            conf_input_senha = input("Confirme sua senha: ")
+
+            if (input_senha and conf_input_senha) and (input_senha == conf_input_senha) and (input_senha == self.__dados.senha):
+                deletar = Delete(Chave())
+                deletar.deleteWhere('instituicao', f"CNPJ = '{self.__dados.CNPJ}'")
+
+                return True
+            else:
+                print("Senha incorreta")
+                return False
+
+        else:
+            return False
 
 

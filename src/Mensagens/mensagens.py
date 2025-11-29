@@ -146,40 +146,33 @@ MSG_LOGIN_EMP_INST = """
 
 """
 
-MSG_COMANDOS_JOVEM = """
-            ajuda - Mostra essa tela de ajuda para lembrar os comandos
-            info - Mostra suas informações
+COMANDOS_JOVEM = { 
+            '1':'Ver minhas informações',
+            '2':'Ver vagas da minha área',
+            '3':'Ver minhas aplicações',
+            '4':'Aplicar para vaga',
+            '5':'Remover aplicação',
+            '6':'Ver Cursos da minha área',
+            '7':'Ver minhas matriculas',
+            '8':'Matricular em um curso',
+            '9':'Remover matricula',
+            '10':'Atualizar meus dados',
+            '11':'Deletar minha conta'
+                  }
 
-            verVagas - Mostra vagas de acordo com a área do seu perfil
-            verAplicações - Mostra as aplicações que fez para vagas
-            aplicarVaga - Leva à opção de aplicar para uma nova vaga
 
-            verCursos - Mostra os cursos de acordo com a área do seu perfil
-            verMatriculas - Mostra as matriculas que fez para os cursos
-            matricularCurso - Leva à opção de matricular para um novo curso
+COMANDOS_EMP = { 
+            '1':'Ver minhas informações',
+            '2':'Ver minhas vagas',
+            '3':'Cadastrar nova vaga',
+            '4':'Atualizar meus dados',
+            '5':'Deletar minha conta'
+            }
 
-            atualizarDados - Leva à opção de atualizar os dados do seu perfil
-
-"""
-
-MSG_COMANDOS_EMP = """
-            ajuda - Mostra essa tela de ajuda para lembrar os comandos
-            info - Mostra suas informações
-
-            mostrarVagas - Mostra vagas que cadastrou 
-            cadastrarVaga - Leva à opção de cadastrar novas vagas
-
-            atualizarDados - Leva à opção de atualizar os dados do seu perfil
-
-"""
-
-MSG_COMANDOS_INST = """
-            ajuda - Mostra essa tela de ajuda para lembrar os comandos
-            info - Mostra suas informações
-
-            mostrarCursos - Mostra cursos que cadastrou 
-            cadastrarCurso - Leva à opção de cadastrar novos cursos
-
-            atualizarDados - Leva à opção de atualizar os dados do seu perfil
-
-"""
+COMANDOS_INST = {
+            '1':'Ver minhas informações',
+            '2':'Ver meus cursos',
+            '3':'Cadastrar novo curso',
+            '4':'Atualizar meus dados',
+            '5':'Deletar minha conta'
+            }

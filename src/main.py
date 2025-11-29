@@ -3,11 +3,10 @@ from CRUD.Read import Read
 
 from Login import Login
 from Mensagens import mensagens
-import TesteValida
-
 from Dados import *
 
 import mysql.connector
+import os
 
 
 def tipoConta():
@@ -57,11 +56,13 @@ def telaInicial():
                         print("Não foi possivel completar o cadastro")
                         continue
 
+        elif conf_login == 'sair':
+            return
         elif conf_login != "sim":
             print("Por favor, digite apenas sim ou não")
             continue
 
-        return
+        return True
 
 def logar():
     while True:
@@ -87,47 +88,90 @@ def logar():
 
 
 def main():
-    telaInicial()
+    if not telaInicial():
+        return
+
     Usuario = logar()
 
-    Usuario.info()
-
-    chave = Chave()
 
     while True:
-        comandos = {
-            'Jovem':('ajuda', 'info', 'verVagas', 'verAplicacoes', 'aplicarVaga', 'verCursos', 'verMatriculas', 'matricularCurso', 'atualizarDados'),
-            'Empresa':('ajuda', 'info', 'mostrarVagas', 'cadastrarVaga', 'atualizarDados'),
-            'Instituição':('ajuda', 'info', 'mostrarCursos', 'cadastrarCurso', 'atualizarDados')
-                    }
+        chave = Chave()
 
-        uso = input("[Conecta Igarassu] $")
+        dicio_comandos = {
+            'Jovem':mensagens.COMANDOS_JOVEM,
+            'Empresa':mensagens.COMANDOS_EMP,
+            'Instituição':mensagens.COMANDOS_INST                    
+            }
+
+        comandos = dicio_comandos[Usuario.tipo]
+        print()
+        for codigo in comandos:
+            print(f"{codigo} - {comandos[codigo]}")
+        print()
+
+
+
+        uso = input("Digite o código do comando: ")
         if uso == 'sair': return
-
-        if uso not in comandos[Usuario.tipo]:
+        
+        if uso not in comandos:
             print("Comando não encontrado")
             continue
 
-        match uso:
-            case 'ajuda':
-                if Usuario.tipo == 'Jovem':
-                    print(mensagens.MSG_COMANDOS_JOVEM)
-                elif Usuario.tipo == 'Empresa':
-                    print(mensagens.MSG_COMANDOS_EMP)
-                else:
-                    print(mensagens.MSG_COMANDOS_INST)
-            case 'info': Usuario.info()
-            case 'verVagas': Usuario.verVagas()
-            case 'verAplicacoes': Usuario.verAplicacoes()
-            case 'aplicarVaga': Usuario.aplicarVaga()
-            case 'verCursos': Usuario.verCursos()
-            case 'verMatriculas': Usuario.verMatriculas()
-            case 'matricularCurso': Usuario.matricularCurso()
-            case 'atualizarDados': Usuario.atualizarDados()
-            case 'mostrarVagas': Usuario.mostrarVagas()
-            case 'cadastrarVaga': Usuario.cadastrarVaga()
-            case 'mostrarCursos': Usuario.mostrarCursos()
-            case 'cadastrarCurso': Usuario.cadastrarCurso()
+
+        LIMPAR = 'cls' if os.name == 'nt' else 'clear'
+        os.system(LIMPAR)
+
+        if Usuario.tipo == 'Jovem':
+            match uso:
+                case '1': Usuario.info()
+                case '2': Usuario.verVagas()
+                case '3': Usuario.verAplicacoes()
+                case '4': Usuario.aplicarVaga()
+                case '5': Usuario.removerAplicacao()
+                case '6': Usuario.verCursos()
+                case '7': Usuario.verMatriculas()
+                case '8': Usuario.matricularCurso()
+                case '9': Usuario.removerMatricula()
+                case '10': Usuario.atualizarDados()
+                case '11': 
+                    if Usuario.deletarConta():
+                        print("Adeus!")
+                        return
+                case _: print("Comando não encontrado")
+        elif Usuario.tipo == 'Empresa':
+            match uso:
+                case '1': Usuario.info()
+                case '2': Usuario.mostrarVagas()
+                case '3': Usuario.cadastrarVaga()
+                case '4': Usuario.atualizarDados()
+                case '5': 
+                    if Usuario.deletarConta():
+                        print("Adeus!")
+                        return
+                case _: print("Comando não encontrado")
+        elif Usuario.tipo == 'Instituição':
+            match uso:
+                case '1': Usuario.info()
+                case '2': Usuario.mostrarCursos()
+                case '3': Usuario.cadastrarCurso()
+                case '4': Usuario.atualizarDados()
+                case '5': 
+                    if Usuario.deletarConta():
+                        print("Adeus!")
+                        return
+                case _: print("Comando não encontrado")
+
+        input_continuar = input("Digite enter para continuar")
+        if input_continuar == 'sair': return
+
+        chave.cursor.close()
+        chave.cnx.close()
+
+
+
+
+
 
 
                 

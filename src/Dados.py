@@ -51,6 +51,19 @@ class DadosInstituicao:
         self.nome_bairro = dados[6]
 
 
+class DadosVagas:
+    def __init__(self, dados):
+        self.vagas = { 
+                 f'{vaga[0]}':{
+                             'nome':vaga[1],
+                             'quant':vaga[2],
+                             'desc':vaga[3],
+                             'area':vaga[4],
+                             'turno':vaga[5],
+                             'emp':vaga[6],
+                             'bairro':vaga[7]
+                             } for vaga in dados
+                }
 
 
 @dataclass

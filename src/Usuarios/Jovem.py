@@ -1,11 +1,9 @@
 from CRUD.Create import Create
 from CRUD.Read import Read
 from CRUD.Update import Update
-from CRUD.Valida import Valida
+from CRUD.Delete import Delete
 
 from Dados import *
-
-#ERRO AO TENTAR CADASTROS COM CHAVES QUE JÁ EXISTEM, PRECISA DE UM TESTE PARA ESPECIFICAR O ERRO
 
 class Jovem:
     def __init__(self, dados, chave):
@@ -98,12 +96,28 @@ class Jovem:
 
         self.atualizaAplicacoes()
 
+    def removerAplicacao(self):
+        input_cod_vaga = int(input("Digite o código da vaga que quer retirar a aplicação: "))
+
+        remover = Delete(Chave())
+
+        if not remover.deleteWhere('aplica', f"CPF = '{self.__dados.CPF}' AND cod_vaga = {input_cod_vaga}"):
+            print("Código de vaga não encontrado")
+            return False
+
+        self.atualizaAplicacoes()
+
+        return True
+
+        
+
+
     def atualizaAplicacoes(self):
         buscar = Read(self.__chave)
         aplicacoes = buscar.selectAplicacoes(self.__dados.CPF)
+        self.__aplicacoes = aplicacoes
         if not aplicacoes:
             return False
-        self.__aplicacoes = aplicacoes
 
 
 
@@ -170,52 +184,63 @@ class Jovem:
 
         self.atualizaMatriculas()
 
+    def removerMatricula(self):
+        input_cod_mat = int(input("Digite o código do curso que quer retirar a matricula: "))
+
+        remover = Delete(Chave())
+
+        if not remover.deleteWhere('matricula', f"CPF = '{self.__dados.CPF}' AND cod_curso = {input_cod_mat}"):
+            print("Código de curso não encontrado")
+            return False
+
+
+        self.atualizaMatriculas()
+
+        return True
+
+
 
     def atualizaMatriculas(self):
         buscar = Read(self.__chave)
         matriculas = buscar.selectMatriculas(self.__dados.CPF)
+
+        self.__matriculas = matriculas
         if not matriculas:
             print("Nenhuma matricula realizada")
             return False
-        self.__matriculas = matriculas
 
 
 
     def atualizarDados(self):
         while True:
             dicio_dados = {
-                    '1':'nome_comp',
-                    '2':'data_nasc',
-                    '3':'telefone',
-                    '4':'endereco',
-                    '5':'desc_user',
-                    '6':'cod_bairro',
-                    '7':'cod_area'
+                    '1':('nome_comp',  lambda: InputValido('Digite o novo nome', 'nome')),
+                    '2':('data_nasc',  lambda: InputDataValida()),
+                    '3':('telefone',   lambda: InputValido('Digite o novo telefone', 'telefone')),
+                    '4':('endereco',   lambda: InputValido('Digite o novo endereço', 'endereco')),
+                    '5':('desc_user',  lambda: InputValido('Digite o novo descrição', 'descricao')),
+                    '6':('cod_bairro', lambda: InputValido('Digite o novo codigo de bairro', 'bairro')),
+                    '7':('cod_area',   lambda: InputValido('Digite o novo codigo de área', 'area'))
                                 }
-            for codigo in dicio_dados:
-                print(f"{codigo} - {dicio_dados[codigo]}")
+            for dado in dicio_dados:
+                print(f"{dado} - {dicio_dados[dado]}")
 
-            input_codigo = input("Digite o código para o tipo de dado que quer atualizar: ")
-            if input_codigo == 'sair': return 
-            if not input_codigo or input_codigo not in dicio_dados: 
+            codigo_dado = input("Digite o código para o tipo de dado que quer atualizar: ")
+            if codigo_dado == 'sair': return 
+            if not codigo_dado or codigo_dado not in dicio_dados: 
                 print("Código não está na lista")
                 continue
 
-            valor = None
-            match input_codigo:
-                case '1': valor = InputValido('Digite o novo nome', 'nome') 
-                case '2': valor = InputDataValida() 
-                case '3': valor = InputValido('Digite o novo telefone', 'telefone') 
-                case '4': valor = InputValido('Digite o novo endereço', 'endereco')
-                case '5': valor = InputValido('Digite a nova descrição', 'descricao') 
-                case '6': valor = InputValido('Digite o novo codigo de bairro', 'bairro') 
-                case '7': valor = InputValido('Digite o novo codigo de area', 'area')
-                case _: return
+            ATRIBUTO = dicio_dados[codigo_dado][0]
+            INPUT_VALOR = dicio_dados[codigo_dado][1]
+            VALOR = INPUT_VALOR()
+
+
 
             atualizar = Update(self.__chave)
             atualizar.updateWhere('usuario',
-                                  dicio_dados[input_codigo],
-                                  f"'{valor.dado}'",
+                                  ATRIBUTO,
+                                  f"'{VALOR.dado}'",
                                   f"CPF = '{self.__dados.CPF}' AND senha = '{self.__dados.senha}'")
 
             buscar = Read(self.__chave)
@@ -223,6 +248,37 @@ class Jovem:
                                                  'usuario u, area ar, bairro b',
                                                  f"CPF = '{self.__dados.CPF}' AND senha = '{self.__dados.senha}'")
             self.__dados = DadosJovem(select)
+
+
+    def deletarConta(self):
+        print("Você tem total certeza de que deseja deletar sua conta?")
+        confirmacao = input("-> ").lower()
+
+        if confirmacao == 'sim':
+            input_senha = input("Digite a sua senha: ")
+            conf_input_senha = input("Confirme sua senha: ")
+
+            if (input_senha and conf_input_senha) and (input_senha == conf_input_senha) and (input_senha == self.__dados.senha):
+                deletar = Delete(Chave())
+
+                deletar.deleteWhere('usuario', f"CPF = '{self.__dados.CPF}'")
+                return True
+
+            else: 
+                print("Senha incorreta")
+                return False
+
+        else: 
+            return False
+
+
+                
+
+
+
+
+            
+
 
 
 

@@ -2,6 +2,7 @@ from CRUD.Create import Create
 from CRUD.Read import Read
 from CRUD.Valida import Valida
 from CRUD.Update import Update
+from CRUD.Delete import Delete
 
 from Dados import *
 
@@ -57,30 +58,30 @@ class Empresa:
     def atualizarDados(self):
         while True:
             dicio_dados = {
-                    '1':'nome_emp',
-                    '2':'endereco',
-                    '3':'desc_emp',
-                    '4':'cod_bairro'
+                    '1':('nome_emp', lambda: InputValido('Digite seu novo nome', 'nome')),
+                    '2':('endereco', lambda: InputValido('Digite seu novo endereço', 'endereco')),
+                    '3':('desc_emp', lambda: InputValido('Digite sua nova descrição', 'descricao')),
+                    '4':('cod_bairro', lambda: InputValido('Digite o código de bairro', 'bairro'))
                     }
-            for dado in dicio_dados:
-                print(f"{dado} - {dicio_dados[dado]}")
-            codigo_dado = input("Digite o código do dado que deseja atualizar: ")
-            if not codigo_dado or codigo_dado not in dicio_dados: return False
 
-            match codigo_dado:
-                case '1': valor = InputValido('Digite seu novo nome', 'nome')
-                case '2': valor = InputValido('Digite seu novo endereço', 'endereco')
-                case '3': valor = InputValido('Digite sua nova descrição', 'descricao')
-                case '4': valor = InputValido('Digite o codigo de bairro', 'bairro')
-                case 'sair': break
-                case _: 
-                    print("Código de dado não encontrado") 
-                    continue
+            for dado in dicio_dados:
+                print(f"{dado} - {dicio_dados[dado][0]}")
+
+            codigo_dado = input("Digite o código do dado que deseja atualizar: ")
+            if codigo_dado == 'sair':
+                return 
+            elif not codigo_dado or codigo_dado not in dicio_dados: 
+                print("Código de dado não encontrado")
+                continue 
+
+            ATRIBUTO = dicio_dados[codigo_dado][0]
+            INPUT_VALOR = dicio_dados[codigo_dado][1]
+            VALOR = INPUT_VALOR() 
 
             atualizar = Update(self.__chave) 
             atualizar.updateWhere('empresa',
-                                  dicio_dados[codigo_dado],
-                                  f"'{valor.dado}'",
+                                  ATRIBUTO,
+                                  f"'{VALOR.dado}'",
                                   f"CNPJ = '{self.__dados.CNPJ}' AND senha = '{self.__dados.senha}'")
 
             buscar = Read(self.__chave)
@@ -89,6 +90,27 @@ class Empresa:
                                            f"CNPJ = '{self.__dados.CNPJ}' AND e.cod_bairro = b.cod_bairro")
 
             self.__dados = DadosEmpresa(select)
+
+    def deletarConta(self):
+        print("Você tem total certeza de que deseja deletar sua conta?")
+        confirmacao = input("-> ").lower()
+
+        if confirmacao == 'sim':
+            input_senha = input("Digite a sua senha: ")
+            conf_input_senha = input("Confirme sua senha: ")
+
+            if (input_senha and conf_input_senha) and (input_senha == conf_input_senha) and (input_senha == self.__dados.senha):
+                deletar = Delete(Chave())
+                deletar.deleteWhere('empresa', f"CNPJ = '{self.__dados.CNPJ}'")
+
+                return True
+            else:
+                print("Senha incorreta")
+                return False
+
+        else:
+            return False
+
 
 
 
