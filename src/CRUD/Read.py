@@ -1,5 +1,7 @@
 import mysql.connector
 
+from Dados import *
+
 class Read:
     def __init__(self, chave):
         self.__cnx = chave.cnx
@@ -7,7 +9,7 @@ class Read:
 
         self.VAGAS_SELECT ="""
                 SELECT
-                cod_vaga, nome_vaga, quant_vagas, desc_vaga,
+                v.*,
                 nome_area, nome_turno, nome_emp, nome_bairro
                 FROM
                 vaga v, empresa e, area a, turno t, bairro b
@@ -87,6 +89,10 @@ class Read:
             print("Algo deu errado durante a execução, não foi possivel selecionar todos os elementos")
             return False
 
+    def selectAllWhereERRO(self, atributo, tabela, filtro):
+        self.__cursor.execute(f"SELECT {atributo} FROM {tabela} WHERE {filtro};")
+        return self.__cursor.fetchall()
+
 
     def selectJovem(self, CPF):
         try:
@@ -100,7 +106,8 @@ class Read:
     def selectVagas(self, cod_area):
         try:
             self.__cursor.execute(self.VAGAS_SELECT.format(cod_area))
-            return self.__cursor.fetchall()
+            select = self.__cursor.fetchall()
+            return DadosVagas(select)
         except mysql.connector.errors.DatabaseError:
             print("Algo deu errado durante a execução, não foi possivel selecionar vagas")
             return False

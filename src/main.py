@@ -144,8 +144,9 @@ def main():
                 case '1': Usuario.info()
                 case '2': Usuario.mostrarVagas()
                 case '3': Usuario.cadastrarVaga()
-                case '4': Usuario.atualizarDados()
-                case '5': 
+                case '4': Usuario.removerVaga()
+                case '5': Usuario.atualizarDados()
+                case '6': 
                     if Usuario.deletarConta():
                         print("Adeus!")
                         return
@@ -155,8 +156,9 @@ def main():
                 case '1': Usuario.info()
                 case '2': Usuario.mostrarCursos()
                 case '3': Usuario.cadastrarCurso()
-                case '4': Usuario.atualizarDados()
-                case '5': 
+                case '4': Usuario.removerCurso()
+                case '5': Usuario.atualizarDados()
+                case '6': 
                     if Usuario.deletarConta():
                         print("Adeus!")
                         return

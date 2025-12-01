@@ -15,7 +15,20 @@ class Instituicao:
         self.__cursor = chave.cursor
 
         self.__cursos = None
-        self.CURSO_ATRIBUTOS = "cod_curso, nome_curso, quant_vagas, desc_curso, cod_area, cod_turno"
+
+        self.CURSOS_ATRIBUTOS = """
+                        cod_curso, nome_curso, quant_vagas, desc_curso, c.cod_area, c.cod_turno, c.cod_bairro,
+                        nome_area, nome_turno, nome_inst, nome_bairro
+                               """
+        self.CURSOS_TABELAS = "curso c, area ar, turno t, instituicao i, bairro b"
+        self.CURSOS_FILTRO = f"""
+                        c.CNPJ = {self.__dados.CNPJ} AND
+                        c.cod_area = ar.cod_area AND
+                        c.cod_turno = t.cod_turno AND
+                        c.cod_bairro = b.cod_bairro
+                              """
+
+                        
 
         self.atualizaCursos()
 
@@ -33,30 +46,27 @@ class Instituicao:
         """)
 
     def mostrarCursos(self):
-        if not self.__cursos:
+        if not self.__cursos.dados:
             print("Nenhum curso cadastrado")
             return 
-        for curso in self.__cursos:
+        for curso in self.__cursos.dados:
             print(f"""
-                codigo: {curso[0]}
-                nome: {curso[1]}
-                vagas: {curso[2]}
-                codigo de área: {curso[4]}
-                codigo de turno: {curso[5]}
+                codigo: {curso}
+                nome: {self.__cursos.dados[curso]['nome']}
+                vagas: {self.__cursos.dados[curso]['quant']}
+                Área: {self.__cursos.dados[curso]['nome_area']}
+                Turno: {self.__cursos.dados[curso]['nome_turno']}
 
-                descrição: {curso[3]}
+                descrição: {self.__cursos.dados[curso]['desc']}
             """)
                 
 
 
     def atualizaCursos(self):
-        try:
-            self.__cursor.execute(f"SELECT {self.CURSO_ATRIBUTOS} FROM curso WHERE CNPJ = '{self.__dados.CNPJ}'")
-            self.__cursos = self.__cursor.fetchall()
-            return True
-        except mysql.connector.errors.DatabaseError:
-            print("Algo deu errado durante a atualização de cursos, atualização não finalizada")
-            return False
+        buscar = Read(self.__chave)
+        select = buscar.selectAllWhereERRO(self.CURSOS_ATRIBUTOS, self.CURSOS_TABELAS, self.CURSOS_FILTRO)
+
+        self.__cursos = DadosCursos(select)
         
 
     def cadastrarCurso(self):
@@ -67,6 +77,23 @@ class Instituicao:
 
         return (True if self.atualizaCursos() else False)
 
+    def removerCurso(self):
+        try:
+            input_cod_curso = int(input("Digite o código do curso  que quer remover: "))
+        except ValueError:
+            if input_cod_curso == 'sair': 
+                return False
+            else:
+                print("Esse campo aceita apenas inteiros")
+                return False
+
+        remover = Delete(self.__chave)
+        if not remover.deleteWhere('curso', f"CNPJ = '{self.__dados.CNPJ}' AND cod_curso = {input_cod_curso}"):
+            print("Código de curso não encontrado")
+            return False
+
+        self.atualizaCursos()
+        return True
 
     def atualizarDados(self):
         while True:
@@ -79,7 +106,11 @@ class Instituicao:
             for dado in dicio_dados:
                 print(f"{dado} - {dicio_dados[dado]}")
             codigo_dado = input("Digite o código do dado que deseja atualizar: ")
-            if not codigo_dado or codigo_dado not in dicio_dados: return False
+            if codigo_dado == 'sair': 
+                return False
+            if not codigo_dado or codigo_dado not in dicio_dados: 
+                print("Código de dado não encontrado")
+                return False
 
             match codigo_dado:
                 case '1': valor = InputValido('Digite seu novo nome', 'nome')

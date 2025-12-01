@@ -1,3 +1,5 @@
+import mysql.connector
+
 class Delete:
     def __init__(self, chave):
         self.__chave = chave
@@ -17,7 +19,7 @@ class Delete:
     def deleteWhereERRO(self, tabela, filtro):
         self.__cursor.execute(f"DELETE FROM {tabela} WHERE {filtro}")
         self.__cnx.commit()
-        return False
+        return True
 
     def deleteCascade(self, tabelas_filhas, tabela_pai, filtro):
         for tabela in tabelas_filhas:

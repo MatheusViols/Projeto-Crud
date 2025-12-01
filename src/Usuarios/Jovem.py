@@ -40,16 +40,16 @@ class Jovem:
             print("Nenhuma vaga encontrada")
             return False
 
-        for vaga in vagas:
+        for vaga in vagas.dados:
             print(f"""
-                Codigo: {vaga[0]} | Nome: {vaga[1]}
-                Empresa: {vaga[5]}
-                Área: {vaga[3]}
-                Turno: {vaga[4]}
-                Bairro: {vaga[6]}
-                Vagas: {vaga[2]}
+                Codigo: {vaga} | Nome: {vagas.dados[vaga]['nome']}
+                Empresa: {vagas.dados[vaga]['nome_emp']}
+                Área: {vagas.dados[vaga]['nome_area']}
+                Turno: {vagas.dados[vaga]['nome_turno']}
+                Bairro: {vagas.dados[vaga]['nome_bairro']}
+                Vagas: {vagas.dados[vaga]['quant']}
 
-                Descrição: {vaga[7]}
+                Descrição: {vagas.dados[vaga]['desc']}
             """)
 
     def verAplicacoes(self):

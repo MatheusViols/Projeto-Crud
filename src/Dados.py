@@ -51,20 +51,41 @@ class DadosInstituicao:
         self.nome_bairro = dados[6]
 
 
+@dataclass
 class DadosVagas:
-    def __init__(self, dados):
-        self.vagas = { 
+    def __init__(self, lista_vagas):
+        self.dados = { 
                  f'{vaga[0]}':{
                              'nome':vaga[1],
                              'quant':vaga[2],
                              'desc':vaga[3],
-                             'area':vaga[4],
-                             'turno':vaga[5],
-                             'emp':vaga[6],
-                             'bairro':vaga[7]
-                             } for vaga in dados
+                             'cod_area':vaga[4],
+                             'cod_turno':vaga[5],
+                             'cod_bairro':vaga[6],
+                             'nome_area':vaga[7],
+                             'nome_turno':vaga[8],
+                             'nome_emp':vaga[9],
+                             'nome_bairro':vaga[10]
+                             } for vaga in lista_vagas
                 }
 
+@dataclass
+class DadosCursos:
+    def __init__(self, lista_cursos):
+        self.dados = { 
+                 f'{curso[0]}':{
+                             'nome':curso[1],
+                             'quant':curso[2],
+                             'desc':curso[3],
+                             'cod_area':curso[4],
+                             'cod_turno':curso[5],
+                             'cod_bairro':curso[6],
+                             'nome_area':curso[7],
+                             'nome_turno':curso[8],
+                             'nome_emp':curso[9],
+                             'nome_bairro':curso[10]
+                             } for curso in lista_cursos
+                }
 
 @dataclass
 class InputCPF():

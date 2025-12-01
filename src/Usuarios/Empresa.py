@@ -12,7 +12,17 @@ class Empresa:
         self.__chave = chave
 
         self.__vagas = None
-        self.VAGA_ATRIBUTOS = "cod_vaga, nome_vaga, quant_vagas, desc_vaga, cod_area, cod_turno"
+        self.VAGAS_ATRIBUTOS = """
+                            cod_vaga, nome_vaga, quant_vagas, desc_vaga, v.cod_area, v.cod_turno, v.cod_bairro,
+                            nome_area, nome_turno, nome_emp, nome_bairro
+                              """
+        self.VAGAS_TABELAS = "vaga v, area ar, turno t, bairro b, empresa e"
+        self.VAGAS_FILTRO = f"""
+                            v.CNPJ = {self.__dados.CNPJ} AND
+                            v.cod_area = ar.cod_area AND
+                            v.cod_turno = t.cod_turno AND
+                            v.cod_bairro = b.cod_bairro
+                            """
 
         self.atualizaVagas()
 
@@ -29,23 +39,24 @@ class Empresa:
         """)
 
     def mostrarVagas(self):
-        if not self.__vagas:
+        if not self.__vagas.dados:
             print("Nenhuma vaga cadastrada")
             return
-        for vaga in self.__vagas:
+        for vaga in self.__vagas.dados:
             print(f"""
-                codigo: {vaga[0]}
-                nome: {vaga[1]}
-                vagas: {vaga[2]}
-                codigo de área: {vaga[4]}
-                codigo de turno: {vaga[5]}
+                codigo: {vaga}
+                nome: {self.__vagas.dados[vaga]['nome']}
+                vagas: {self.__vagas.dados[vaga]['quant']}
+                Área: {self.__vagas.dados[vaga]['nome_area']}
+                Turno: {self.__vagas.dados[vaga]['nome_turno']}
 
-                descrição: {vaga[3]}
+                descrição: {self.__vagas.dados[vaga]['desc']}
             """)
 
     def atualizaVagas(self):
         buscar = Read(self.__chave)
-        self.__vagas = buscar.selectAllWhere(self.VAGA_ATRIBUTOS, 'vaga', f"CNPJ = '{self.__dados.CNPJ}'")
+        select = buscar.selectAllWhereERRO(self.VAGAS_ATRIBUTOS, self.VAGAS_TABELAS, self.VAGAS_FILTRO)
+        self.__vagas = DadosVagas(select)
 
     def cadastrarVaga(self):
         cadastro = Create(self.__chave)
@@ -54,6 +65,26 @@ class Empresa:
             return False
 
         return True if self.atualizaVagas() else False
+
+    def removerVaga(self):
+        try:
+            input_cod_vaga = int(input("Digite o código da vaga que quer remover: "))
+        except ValueError:
+            if input_cod_vaga == 'sair': 
+                return False
+            else:
+                print("Esse campo aceita apenas inteiros")
+                return False
+
+        remover = Delete(self.__chave)
+        if not remover.deleteWhere('vaga', f"CNPJ = '{self.__dados.CNPJ}' AND cod_vaga = {input_cod_vaga}"):
+            print("Código de vaga não encontrado")
+            return False
+
+        self.atualizaVagas()
+        return True
+
+
 
     def atualizarDados(self):
         while True:
