@@ -64,7 +64,7 @@ class Instituicao:
 
     def atualizaCursos(self):
         buscar = Read(self.__chave)
-        select = buscar.selectAllWhereERRO(self.CURSOS_ATRIBUTOS, self.CURSOS_TABELAS, self.CURSOS_FILTRO)
+        select = buscar.selectAllWhere(self.CURSOS_ATRIBUTOS, self.CURSOS_TABELAS, self.CURSOS_FILTRO)
 
         self.__cursos = DadosCursos(select)
         
@@ -94,6 +94,99 @@ class Instituicao:
 
         self.atualizaCursos()
         return True
+
+    def verMatriculas(self):
+        try:
+            input_cod_curso = int(input("Digite o código do curso que quer ver matriculas: "))
+        except ValueError:
+            if input_cod_vaga == 'sair': 
+                return False
+            else:
+                print("Esse campo aceita apenas inteiros")
+                return False
+
+        buscar = Read(self.__chave)
+        select = buscar.selectAllWhere('m.*, u.nome_comp, u.data_nasc, u.telefone, u.desc_user',
+                                           'matricula m, usuario u',
+                                           f"m.cod_curso = {input_cod_curso} AND m.CPF = u.CPF")
+        if not select:
+            print("Nenhuma matricula encontrada")
+            return False
+
+
+        for matricula in select:
+            print(f"""
+                    CPF: {matricula[0]}
+                    Nome: {matricula[3]}
+                    Nascimento: {matricula[4]}
+                    Telefone: {matricula[5]}
+
+                    Descrição: {matricula[6]}
+
+
+                    Status: {'Em espera' if matricula[2] == False else 'Aprovado'}
+            """)
+
+
+    def validarMatricula(self):
+        try:
+            input_cod_curso = int(input("Digite o código do curso que quer ver matriculas: "))
+        except ValueError:
+            if input_cod_curso == 'sair': 
+                return False
+            else:
+                print("Esse campo aceita apenas inteiros")
+                return False
+
+        buscar = Read(self.__chave)
+        select = buscar.selectAllWhere('m.*, u.nome_comp, u.data_nasc, u.telefone, u.desc_user',
+                                           'matricula m, usuario u',
+                                           f"m.cod_curso = {input_cod_curso} AND m.status_mat = False AND m.CPF = u.CPF")
+        if not select:
+            print("Nenhuma matricula encontrada")
+            return False
+
+        count=1
+        mats = {}
+        for matricula in select:
+            mats[count] = matricula
+            count+=1
+
+        for matricula in mats:
+            print(f"""
+                    Cod de matricula: {matricula}
+                    CPF: {mats[matricula][0]}
+                    Nome: {mats[matricula][3]}
+                    Nascimento: {mats[matricula][4]}
+                    Telefone: {mats[matricula][5]}
+
+                    Descrição: {mats[matricula][6]}
+
+
+                    Status: {'Em espera' if mats[matricula][2] == False else 'Aprovado'}
+            """)
+
+        try:
+            input_cod_mat = int(input("Digite o codigo da matricula que quer validar: "))
+        except ValueError:
+            if input_cod_mat == 'sair': 
+                return False
+            else:
+                print("Esse campo aceita apenas inteiros")
+                return False
+
+        if input_cod_mat not in mats: 
+            print("O código digitado na lista de matriculas")
+            return False
+
+
+        atualizar = Update(self.__chave)
+        atualizar.updateWhere('matricula', 'status_mat', True,
+                                  f"CPF = '{mats[input_cod_mat][0]}' AND cod_curso = {mats[input_cod_mat][1]}")
+
+
+
+
 
     def atualizarDados(self):
         while True:

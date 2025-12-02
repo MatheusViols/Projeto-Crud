@@ -75,6 +75,8 @@ class Valida:
     def Nome(self, nome_comp):
         if self.campoVazio(nome_comp):
             return False
+        elif self.foraDe(len(nome_comp), 1, 50):
+            return False
 
         return True
 
@@ -126,6 +128,8 @@ class Valida:
     def Endereco(self, endereco):
         if self.campoVazio(endereco):
             return False
+        elif self.foraDe(len(endereco), 1, 30):
+            return False
 
         return True
 
@@ -157,14 +161,18 @@ class Valida:
 
         return True
 
-    def nomeCurso(self, nome_comp):
-        if self.campoVazio(nome_comp):
+    def nomeCurso(self, nome_curso):
+        if self.campoVazio(nome_curso):
+            return False
+        elif self.foraDe(len(nome_curso), 1, 30):
             return False
 
         return True
 
-    def nomeVaga(self, nome_comp):
-        if self.campoVazio(nome_comp):
+    def nomeVaga(self, nome_vaga):
+        if self.campoVazio(nome_vaga):
+            return False
+        elif self.foraDe(len(nome_curso), 1, 30):
             return False
 
         return True

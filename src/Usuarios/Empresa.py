@@ -13,7 +13,7 @@ class Empresa:
 
         self.__vagas = None
         self.VAGAS_ATRIBUTOS = """
-                            cod_vaga, nome_vaga, quant_vagas, desc_vaga, v.cod_area, v.cod_turno, v.cod_bairro,
+                            v.*,
                             nome_area, nome_turno, nome_emp, nome_bairro
                               """
         self.VAGAS_TABELAS = "vaga v, area ar, turno t, bairro b, empresa e"
@@ -83,6 +83,94 @@ class Empresa:
 
         self.atualizaVagas()
         return True
+
+    def verAplicacoes(self):
+        try:
+            input_cod_vaga = int(input("Digite o código da vaga que quer ver aplicações: "))
+        except ValueError:
+            if input_cod_vaga == 'sair': 
+                return False
+            else:
+                print("Esse campo aceita apenas inteiros")
+                return False
+
+        buscar = Read(self.__chave)
+        aplicacoes = buscar.selectAllWhere('a.*, u.nome_comp, u.data_nasc, u.telefone, u.desc_user',
+                                           'aplica a, usuario u',
+                                           f"a.cod_vaga = {input_cod_vaga} AND a.CPF = u.CPF")
+        if not aplicacoes:
+            print("Nenhuma aplicação encontrada")
+            return False
+
+        for aplicacao in aplicacoes:
+            print(f"""
+                    CPF: {aplicacao[0]}
+                    Nome: {aplicacao[3]}
+                    Nascimento: {aplicacao[4]}
+                    Telefone: {aplicacao[5]}
+
+                    Descrição: {aplicacao[6]}
+
+
+                    Status: {'Em espera' if aplicacao[2] == False else 'Aprovado'}
+            """)
+        
+
+    def validarAplicacao(self):
+        try:
+            input_cod_vaga = int(input("Digite o código da vaga que quer ver aplicações: "))
+        except ValueError:
+            if input_cod_vaga == 'sair': 
+                return False
+            else:
+                print("Esse campo aceita apenas inteiros")
+                return False
+
+        buscar = Read(self.__chave)
+        select = buscar.selectAllWhere('a.*, u.nome_comp, u.data_nasc, u.telefone, u.desc_user',
+                                           'aplica a, usuario u',
+                                           f"a.cod_vaga = {input_cod_vaga} AND a.status_apli = False AND a.CPF = u.CPF")
+        if not select:
+            print("Nenhuma aplicação encontrada")
+            return False
+
+        count=1
+        aplis = {}
+        for aplicacao in select:
+            aplis[count] = aplicacao
+            count+=1
+
+        for aplicacao in aplis:
+            print(f"""
+                    Cod de matricula: {aplicacao}
+                    CPF: {aplis[aplicacao][0]}
+                    Nome: {aplis[aplicacao][3]}
+                    Nascimento: {aplis[aplicacao][4]}
+                    Telefone: {aplis[aplicacao][5]}
+
+                    Descrição: {aplis[aplicacao][6]}
+
+
+                    Status: {'Em espera' if aplis[aplicacao][2] == False else 'Aprovado'}
+            """)
+
+        try:
+            input_cod_apli = int(input("Digite o codigo da aplicação que quer validar: "))
+        except ValueError:
+            if input_cod_apli == 'sair': 
+                return False
+            else:
+                print("Esse campo aceita apenas inteiros")
+                return False
+
+        if input_cod_apli not in aplis: 
+            print("O código digitado na lista de aplicações")
+            return False
+
+
+        atualizar = Update(self.__chave)
+        atualizar.updateWhere('aplica', 'status_apli', True,
+                                  f"CPF = '{aplis[input_cod_apli][0]}' AND cod_vaga = {aplis[input_cod_apli][1]}")
 
 
 

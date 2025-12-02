@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS instituicao
 CREATE TABLE IF NOT EXISTS curso
 (
 	cod_curso int not null unique primary key AUTO_INCREMENT,
-	nome_curso varchar(20) not null,
+	nome_curso varchar(30) not null,
 	quant_vagas int not null,
 
 	desc_curso varchar(100),
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS curso
 CREATE TABLE IF NOT EXISTS vaga
 (
 	cod_vaga int not null unique primary key AUTO_INCREMENT,
-	nome_vaga varchar(20) not null,
+	nome_vaga varchar(30) not null,
 	quant_vagas int not null,
 
 	desc_vaga varchar(100),
@@ -193,13 +193,21 @@ INSERT INTO bairro(cod_bairro, nome_bairro) VALUES
 (30,'Umbura'),  
 (31,'Cuieiras');
 
-INSERT INTO usuario(CPF, senha, nome_comp, data_nasc, telefone, endereco, desc_user, cod_area, cod_bairro) VALUES('18196112320', 'manga', 'George Alberto', '1987-06-12', '81997141562', 'Rua Camboiá', 'Professor de Front End Rapaz!', 1, 7);
+INSERT INTO usuario(CPF, senha, nome_comp, data_nasc, telefone, endereco, desc_user, cod_area, cod_bairro) VALUES('18196112320', 'manga', 'George Alberto', '2002-09-11', '81997141562', 'Rua Camboiá', 'Professor de Front End Rapaz!', 1, 7);
 
 INSERT INTO empresa(CNPJ, senha, nome_emp, endereco, desc_emp, cod_bairro) VALUES('12345678912345', 'sarahbonito', 'Bonito Generation', 'Rua Padre Canhão', 'Empresa do ramo criativo', 19);
 
-INSERT INTO instituicao(CNPJ, senha, nome_inst, endereco, desc_inst, cod_bairro) VALUES('12345678912345', 'janeremover', 'Unesp', 'Avenida fim do mundo', 'Universidade com mais de 90 anos de história em pernambuco', 22);
+INSERT INTO empresa(CNPJ, senha, nome_emp, endereco, desc_emp, cod_bairro) VALUES('19219319419511', 'caneta', 'Bocanada', 'Av. Chico Linguiça', 'Empresa do ramo tecnológico', 2);
 
-INSERT INTO vaga(nome_vaga, quant_vagas, desc_vaga, cod_area, cod_turno, CNPJ, cod_bairro) VALUES('Dev BackEnd', 1, 'Desenvolvedor BackEnd RAPAZ!', 1, 3, '12345678912345', 19);
+INSERT INTO instituicao(CNPJ, senha, nome_inst, endereco, desc_inst, cod_bairro) VALUES('12345678912345', 'janeremover', 'UniFarinha', '', 'Farinha.', 22);
+
+INSERT INTO instituicao(CNPJ, senha, nome_inst, endereco, desc_inst, cod_bairro) VALUES('16116116116122', 'waves', 'UniQui', 'Rua limpa tripa', 'QuiQuiQuiQuiQui', 10);
+
+INSERT INTO vaga(nome_vaga, quant_vagas, desc_vaga, cod_area, cod_turno, CNPJ, cod_bairro) VALUES('Dev FrontEnd', 1, 'Desenvolvedor FrontEnd RAPAZ!', 1, 3, '12345678912345', 19);
+
+INSERT INTO vaga(nome_vaga, quant_vagas, desc_vaga, cod_area, cod_turno, CNPJ, cod_bairro) VALUES('Dev BackEnd', 1, 'Desenvolvedor BackEnd RAPAZ!', 1, 1, '19219319419511', 2);
 
 INSERT INTO curso(nome_curso, quant_vagas, desc_curso, cod_area, cod_turno, CNPJ, cod_bairro) VALUES('Python +', 1, 'Aprenda python para sair do nivel intermediario', 1, 1, '12345678912345', 22);
+
+INSERT INTO curso(nome_curso, quant_vagas, desc_curso, cod_area, cod_turno, CNPJ, cod_bairro) VALUES('JavaScript em prática', 1, 'Aprenda javascript com muita prática', 1, 2, '16116116116122', 10);
 "

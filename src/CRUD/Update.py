@@ -13,7 +13,11 @@ class Update:
 
 
     def updateWhere(self, tabela, atributo, valor, filtro):
+        try:
             self.__cursor.execute(f"UPDATE {tabela} SET {atributo} = {valor} WHERE {filtro}")
             self.__cnx.commit()
-            self.__cursor.fetchall()
+        except mysql.connector.errors.DatabaseError:
+            print("Não foi possivel atualizar")
+            return False
+
 

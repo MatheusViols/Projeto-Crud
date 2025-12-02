@@ -61,11 +61,12 @@ class DadosVagas:
                              'desc':vaga[3],
                              'cod_area':vaga[4],
                              'cod_turno':vaga[5],
-                             'cod_bairro':vaga[6],
-                             'nome_area':vaga[7],
-                             'nome_turno':vaga[8],
-                             'nome_emp':vaga[9],
-                             'nome_bairro':vaga[10]
+                             'CNPJ':vaga[6],
+                             'cod_bairro':vaga[7],
+                             'nome_area':vaga[8],
+                             'nome_turno':vaga[9],
+                             'nome_emp':vaga[10],
+                             'nome_bairro':vaga[11]
                              } for vaga in lista_vagas
                 }
 

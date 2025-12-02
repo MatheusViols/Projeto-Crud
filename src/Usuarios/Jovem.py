@@ -97,7 +97,13 @@ class Jovem:
         self.atualizaAplicacoes()
 
     def removerAplicacao(self):
-        input_cod_vaga = int(input("Digite o código da vaga que quer retirar a aplicação: "))
+        while True:
+            try:
+                input_cod_vaga = int(input("Digite o código da vaga que quer retirar a aplicação: "))
+                break
+            except mysql.connector.errors.DatabaseError:
+                print("Esse campo aceita apenas numeros inteiros")
+                continue 
 
         remover = Delete(Chave())
 
@@ -185,7 +191,14 @@ class Jovem:
         self.atualizaMatriculas()
 
     def removerMatricula(self):
-        input_cod_mat = int(input("Digite o código do curso que quer retirar a matricula: "))
+        while True:
+            try:
+                input_cod_mat = int(input("Digite o código do curso que quer retirar a matricula: "))
+                break
+            except mysql.connector.errors.DatabaseError:
+                print("Esse campo aceita apenas numeros inteiros")
+                continue
+
 
         remover = Delete(Chave())
 
@@ -223,7 +236,7 @@ class Jovem:
                     '7':('cod_area',   lambda: InputValido('Digite o novo codigo de área', 'area'))
                                 }
             for dado in dicio_dados:
-                print(f"{dado} - {dicio_dados[dado]}")
+                print(f"{dado} - {dicio_dados[dado][0]}")
 
             codigo_dado = input("Digite o código para o tipo de dado que quer atualizar: ")
             if codigo_dado == 'sair': return 

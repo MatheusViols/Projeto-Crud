@@ -166,8 +166,10 @@ COMANDOS_EMP = {
             '2':'Ver minhas vagas',
             '3':'Cadastrar nova vaga',
             '4':'Remover vaga',
-            '5':'Atualizar meus dados',
-            '6':'Deletar minha conta'
+            '5':'Ver aplicações para vaga',
+            '6':'Validar aplicação',
+            '7':'Atualizar meus dados',
+            '8':'Deletar minha conta'
             }
 
 COMANDOS_INST = {
@@ -175,6 +177,8 @@ COMANDOS_INST = {
             '2':'Ver meus cursos',
             '3':'Cadastrar novo curso',
             '4':'Remover curso',
-            '5':'Atualizar meus dados',
-            '6':'Deletar minha conta'
+            '5':'Ver matriculas para curso',
+            '6':'Validar matricula',
+            '7':'Atualizar meus dados',
+            '8':'Deletar minha conta'
             }
